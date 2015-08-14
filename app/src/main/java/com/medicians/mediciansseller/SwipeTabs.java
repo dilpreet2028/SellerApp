@@ -57,12 +57,26 @@ public class SwipeTabs extends Fragment {
                 flag=2;
                 return new Delivered();
             }
+
+            if (position==3) {
+                flag=2;
+                return new Delivered();
+            }
+            if (position==4) {
+                flag=2;
+                return new Delivered();
+            }
+            if (position==5) {
+                flag=2;
+                return new Delivered();
+            }
+
             return null;
         }
 
         @Override
         public int getCount() {
-            return 3;
+            return 5;
         }
 
         @Override
@@ -74,7 +88,11 @@ public class SwipeTabs extends Fragment {
             if (position==2)
                 return "Dispatch";
             if (position==3)
-                return "Dispatch";
+                return "Attempt";
+            if (position==4)
+                return "Compeleted";
+            if (position==5)
+                return "Cancelled";
             return super.getPageTitle(position);
         }
     }
