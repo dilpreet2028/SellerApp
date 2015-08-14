@@ -6,11 +6,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.medicians.mediciansseller.Tabs.Accepted;
+import com.medicians.mediciansseller.Tabs.Delivered;
+import com.medicians.mediciansseller.Tabs.Dispatched;
 import com.medicians.mediciansseller.slidingtab.SlidingTabLayout;
 
 /**
@@ -29,11 +31,12 @@ public class SwipeTabs extends Fragment {
         slidingTabLayout=(SlidingTabLayout)view.findViewById(R.id.tabs);
         viewPagerAdapter=new ViewPagerAdapter(getActivity().getSupportFragmentManager());
 
-        slidingTabLayout.setDistributeEvenly(true);
+        //slidingTabLayout.setDistributeEvenly(true);
         viewPager.setAdapter(viewPagerAdapter);
         slidingTabLayout.setViewPager(viewPager);
         return view;
     }
+
 
     private class ViewPagerAdapter extends FragmentStatePagerAdapter{
         public ViewPagerAdapter(FragmentManager fm) {
@@ -44,15 +47,15 @@ public class SwipeTabs extends Fragment {
         public Fragment getItem(int position) {
             if (position==0) {
                 flag=0;
-                return new TabOne();
+                return new Accepted();
             }
             if (position==1) {
                 flag=1;
-                return new TabOne();
+                return new Dispatched();
             }
             if (position==2) {
                 flag=2;
-                return new TabOne();
+                return new Delivered();
             }
             return null;
         }
@@ -65,11 +68,13 @@ public class SwipeTabs extends Fragment {
         @Override
         public CharSequence getPageTitle(int position) {
             if (position==0)
-                return "Accepted";
+                return "New Order";
             if (position==1)
-                return "Dispatched";
+                return "Process";
             if (position==2)
-                return "Delivered";
+                return "Dispatch";
+            if (position==3)
+                return "Dispatch";
             return super.getPageTitle(position);
         }
     }

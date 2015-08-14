@@ -5,7 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +21,11 @@ public class ContentAdapter extends BaseAdapter{
 
     List<Content> contentList;
     Context context;
+    TableLayout tableLayout;
     LayoutInflater inflater;
     TextView company,brandname,category,quantity,selling;
+    Button accept,acceptDelay,reject;
+    TableRow tableRow;
 
     public ContentAdapter(Context context,List<Content> contentList) {
         super();
@@ -42,18 +49,23 @@ public class ContentAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         if(inflater==null)
             inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if(convertView==null)
             convertView=inflater.inflate(R.layout.list_item,null);
 
+
         company=(TextView)convertView.findViewById(R.id.company);
         brandname=(TextView)convertView.findViewById(R.id.brandname);
         category=(TextView)convertView.findViewById(R.id.category);
         quantity=(TextView)convertView.findViewById(R.id.quantity);
         selling=(TextView)convertView.findViewById(R.id.selling);
+        accept=(Button)convertView.findViewById(R.id.acceptButton);
+        acceptDelay=(Button)convertView.findViewById(R.id.acceptDelayButton);
+        reject=(Button)convertView.findViewById(R.id.rejectButton);
+
 
         Content currentItem=contentList.get(position);
         company.setText(currentItem.getCompany());
@@ -62,6 +74,14 @@ public class ContentAdapter extends BaseAdapter{
         quantity.setText(currentItem.getQuantity()+"");
         selling.setText(currentItem.getSp()+"");
 
+
+
+
         return convertView;
     }
+
+    private void postData(String url){
+
+    }
+
 }

@@ -1,5 +1,6 @@
-package com.medicians.mediciansseller;
+package com.medicians.mediciansseller.Tabs;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.medicians.mediciansseller.Content;
+import com.medicians.mediciansseller.ContentAdapter;
+import com.medicians.mediciansseller.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,29 +27,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by dilpreet on 10/8/15.
+ * Created by dilpreet on 13/8/15.
  */
-public class TabOne extends Fragment {
+public class Delivered extends Fragment {
+
     ListView listView;
     ContentAdapter contentAdapter;
     List<Content> list;
+    ProgressDialog progressDialog;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.tab_one,container,false);
+        View view=inflater.inflate(R.layout.global,null);
+        progressDialog=new ProgressDialog(getActivity());
+        progressDialog.setMessage("Loading..");
+        progressDialog.show();
+
         listView=(ListView)view.findViewById(R.id.contentList);
         list=new ArrayList<>();
 
-        getData();
+
         contentAdapter=new ContentAdapter(getActivity(),list);
         listView.setAdapter(contentAdapter);
-
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getData();
+    }
+
+
+
     private void getData(){
-        String url="http://medicians.herokuapp.com/sellerorder/123";
+        String url="http://medicians.herokuapp.com/sellerorder/123/delivered";
         RequestQueue queue= Volley.newRequestQueue(getActivity());
         StringRequest request=new StringRequest(url,
                 new Response.Listener<String>() {
@@ -57,7 +74,7 @@ public class TabOne extends Fragment {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d("Tag",error.toString());
+                        Log.d("Tag", error.toString());
                     }
                 });
         queue.add(request);
@@ -82,7 +99,9 @@ public class TabOne extends Fragment {
                 list.add(item);
                 contentAdapter.notifyDataSetChanged();
 
+
             }
+            progressDialog.dismiss();
 
         }
         catch (JSONException e){

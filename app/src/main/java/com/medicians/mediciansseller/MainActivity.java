@@ -17,10 +17,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.support.v7.widget.Toolbar;
 
+import com.medicians.mediciansseller.Tabs.Accepted;
+
 public class MainActivity extends AppCompatActivity {
 
     ListView listView;
-    String[] list={"Tabs","Current"};
+    String[] list={"Tabs","Order History"};
     ArrayAdapter<String> listadapter;
     DrawerLayout drawerLayout;
     Toolbar toolbar;
@@ -67,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         switch (pos){
             case 0: fragment=new SwipeTabs();
                     break;
-            case 1: fragment=new TabOne();
+            case 1: fragment=new OrderHistory();
                     break;
         }
         FragmentManager manager=getSupportFragmentManager();

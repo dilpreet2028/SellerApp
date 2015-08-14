@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:descendantFocusability="blocksDescendants"
     android:background="@color/white"
+    android:id="@+id/cover"
     android:layout_width="match_parent"
     android:stretchColumns="1"
     android:layout_height="match_parent">
@@ -50,6 +52,34 @@
             android:textColor="#000000"
             android:id="@+id/selling" />
 
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:id="@+id/row"
+        >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accept"
+            android:id="@+id/acceptButton"/>
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accept With Delay"
+            android:id="@+id/acceptDelayButton"/>
+
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reject"
+            android:id="@+id/rejectButton"/>
     </TableRow>
 
 
