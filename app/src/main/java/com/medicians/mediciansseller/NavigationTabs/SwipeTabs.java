@@ -1,4 +1,4 @@
-package com.medicians.mediciansseller;
+package com.medicians.mediciansseller.NavigationTabs;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.medicians.mediciansseller.R;
 import com.medicians.mediciansseller.Tabs.Accepted;
 import com.medicians.mediciansseller.Tabs.Delivered;
 import com.medicians.mediciansseller.Tabs.Dispatched;

@@ -1,4 +1,4 @@
-package com.medicians.mediciansseller;
+package com.medicians.mediciansseller.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,9 +9,10 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.util.ArrayList;
+import com.medicians.mediciansseller.Models.Content;
+import com.medicians.mediciansseller.R;
+
 import java.util.List;
 
 /**
@@ -72,7 +73,7 @@ public class ContentAdapter extends BaseAdapter{
         brandname.setText(currentItem.getBrandname());
         category.setText(currentItem.getCategory());
         quantity.setText(currentItem.getQuantity()+"");
-        selling.setText(currentItem.getSp()+"");
+        selling.setText(currentItem.getSp() + "");
 
 
 

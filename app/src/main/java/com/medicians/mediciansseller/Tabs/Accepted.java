@@ -8,17 +8,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TableRow;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.medicians.mediciansseller.Content;
-import com.medicians.mediciansseller.ContentAdapter;
+import com.medicians.mediciansseller.Models.Content;
+import com.medicians.mediciansseller.Adapter.ContentAdapter;
 import com.medicians.mediciansseller.R;
 
 import org.json.JSONArray;

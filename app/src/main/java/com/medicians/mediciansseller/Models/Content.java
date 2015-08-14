@@ -1,4 +1,4 @@
-package com.medicians.mediciansseller;
+package com.medicians.mediciansseller.Models;
 
 /**
  * Created by dilpreet on 12/8/15.

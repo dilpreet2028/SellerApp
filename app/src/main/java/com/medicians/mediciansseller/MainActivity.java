@@ -17,7 +17,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.support.v7.widget.Toolbar;
 
-import com.medicians.mediciansseller.Tabs.Accepted;
+import com.medicians.mediciansseller.NavigationTabs.OrderHistory;
+import com.medicians.mediciansseller.NavigationTabs.SwipeTabs;
 
 public class MainActivity extends AppCompatActivity {
 
