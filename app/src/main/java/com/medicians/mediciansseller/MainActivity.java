@@ -1,8 +1,13 @@
 package com.medicians.mediciansseller;
 
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.DrawerLayout;
@@ -20,6 +25,7 @@ import android.support.v7.widget.Toolbar;
 import com.medicians.mediciansseller.NavigationTabs.DuePayment;
 import com.medicians.mediciansseller.NavigationTabs.Statement;
 import com.medicians.mediciansseller.NavigationTabs.SwipeTabs;
+import com.medicians.mediciansseller.Services.AlarmReceiver;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     Toolbar toolbar;
     ActionBarDrawerToggle actionBarDrawerToggle;
+    PendingIntent pi;
 
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
@@ -38,8 +45,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         toolbar=(Toolbar)findViewById(R.id.toolbar);
 
+        Intent intent=new Intent(this,AlarmReceiver.class);
+        pi=PendingIntent.getBroadcast(this,0,intent,0);
+
+        startReciever();
         //Starting service
-        startService(new Intent(this,NewOrderService.class));
+       //startService(new Intent(this,NewOrderService.class));
+
+
+
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -117,5 +131,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startReciever(){
+        AlarmManager alarmManager=(AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
+
+        int interval=3000;
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),interval,pi);
+
+        ComponentName componentName=new ComponentName(this,MainActivity.class);
+        PackageManager packageManager=this.getPackageManager();
+        packageManager.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_ENABLED,PackageManager.DONT_KILL_APP);
+
     }
 }

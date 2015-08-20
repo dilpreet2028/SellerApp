@@ -55,10 +55,14 @@ public class Accepted extends Fragment {
 
 
     @Override
-    public void onResume() {
-        super.onResume();
-        getData();
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser)
+            getData();
+
     }
+
 
     private void getData(){
         String url="http://medicians.herokuapp.com/sellerorder/123/accepted";

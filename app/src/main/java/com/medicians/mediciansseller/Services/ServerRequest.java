@@ -1,4 +1,4 @@
-package com.medicians.mediciansseller;
+package com.medicians.mediciansseller.Services;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -13,6 +13,8 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.medicians.mediciansseller.MainActivity;
+import com.medicians.mediciansseller.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,10 +29,15 @@ public class ServerRequest {
         super();
         this.context=context;
         start();
+
+
+
     }
 
     private void start(){
-        new AsyncRequest().execute();
+
+            new AsyncRequest().execute();
+
     }
 
     private class AsyncRequest extends AsyncTask<Void,Void,Void>{
@@ -43,8 +50,10 @@ public class ServerRequest {
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
+
                             JSONObject jsonObject;
                             try{
+
                                jsonObject =new JSONObject(response);
                                 count=jsonObject.getString("count");
 
@@ -53,8 +62,7 @@ public class ServerRequest {
                                     notification();
 
 
-                                Thread.sleep(30000);
-                                new AsyncRequest().execute();
+
                             }
                             catch (Exception e){
 

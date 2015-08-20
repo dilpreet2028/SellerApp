@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
@@ -31,6 +32,7 @@ public class SwipeTabs extends Fragment {
         viewPager=(ViewPager)view.findViewById(R.id.viewPager);
         slidingTabLayout=(SlidingTabLayout)view.findViewById(R.id.tabs);
         viewPagerAdapter=new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+        viewPager.setOffscreenPageLimit(0);
 
         //slidingTabLayout.setDistributeEvenly(true);
         viewPager.setAdapter(viewPagerAdapter);
@@ -39,7 +41,7 @@ public class SwipeTabs extends Fragment {
     }
 
 
-    private class ViewPagerAdapter extends FragmentStatePagerAdapter{
+    private class ViewPagerAdapter extends FragmentStatePagerAdapter {
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
         }

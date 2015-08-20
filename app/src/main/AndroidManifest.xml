@@ -18,15 +18,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver android:name=".Services.AlarmReceiver"
+            android:enabled="true">
+
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"></action>
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".Login"
             android:label="@string/title_activity_login" >
         </activity>
 
-        <service
-            android:name=".NewOrderService"
-            >
+        <service android:name=".Services.NewOrderService" >
         </service>
+
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.medicians.mediciansseller;
+package com.medicians.mediciansseller.Services;
 
 import android.app.Service;
 import android.content.Intent;
@@ -19,6 +19,7 @@ public class NewOrderService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("MyTag","Service STarted");
         ServerRequest serverRequest=new ServerRequest(this);
+        stopSelf();
         return START_STICKY;
 
     }

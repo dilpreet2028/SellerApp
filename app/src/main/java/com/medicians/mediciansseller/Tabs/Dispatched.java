@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -40,27 +41,41 @@ public class Dispatched extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.global,null);
+
+
         listView=(ListView)view.findViewById(R.id.contentList);
         list=new ArrayList<>();
 
-        progressDialog=new ProgressDialog(getActivity());
-        progressDialog.setMessage("Loading..");
-        progressDialog.show();
 
-
-       
         contentAdapter=new ContentAdapter(getActivity(),list);
-        listView.setAdapter(contentAdapter);
-
-
 
         return view;
     }
+
+
+
+
     @Override
-    public void onResume() {
-        super.onResume();
-        getData();
-        Log.d("Tag","Dispatched");
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser)
+        {
+
+            progressDialog=new ProgressDialog(getActivity());
+            progressDialog.setMessage("Loading..");
+            progressDialog.show();
+            listView.setAdapter(contentAdapter);
+
+
+
+
+            getData();
+            Log.d("Tag","Here");
+        }
+        else{
+            list=new ArrayList<>();
+        }
     }
 
 
@@ -72,12 +87,14 @@ public class Dispatched extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         parseJSON(response);
+                        Log.d("tag",response);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("Tag", error.toString());
+                        Toast.makeText(getActivity(),"Error: "+error,Toast.LENGTH_LONG).show();
                     }
                 });
         queue.add(request);
@@ -88,7 +105,7 @@ public class Dispatched extends Fragment {
         JSONArray array;
         try{
             array=new JSONArray(json);
-
+            list=new ArrayList<>();
             for(int i=0;i<array.length();i++){
                 JSONObject object=array.getJSONObject(i);
 
@@ -104,7 +121,12 @@ public class Dispatched extends Fragment {
 
             }
 
-            progressDialog.dismiss();
+            if(progressDialog.isShowing())
+            {
+                Log.d("Tag", "ccclose it");
+                progressDialog.dismiss();
+                progressDialog.cancel();
+            }
 
         }
         catch (JSONException e){

@@ -54,9 +54,12 @@ public class Delivered extends Fragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        getData();
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        if (isVisibleToUser)
+            getData();
+
     }
 
 
