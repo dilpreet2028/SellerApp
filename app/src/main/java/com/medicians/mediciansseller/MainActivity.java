@@ -26,6 +26,7 @@ import com.medicians.mediciansseller.NavigationTabs.DuePayment;
 import com.medicians.mediciansseller.NavigationTabs.Statement;
 import com.medicians.mediciansseller.NavigationTabs.SwipeTabs;
 import com.medicians.mediciansseller.Services.AlarmReceiver;
+import com.medicians.mediciansseller.Services.ServerRequest;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -37,13 +38,24 @@ public class MainActivity extends AppCompatActivity {
     ActionBarDrawerToggle actionBarDrawerToggle;
     PendingIntent pi;
 
+    public static  int mainScreenOn=0;
+
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mainScreenOn=0;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar=(Toolbar)findViewById(R.id.toolbar);
+
+        mainScreenOn=1;
 
         Intent intent=new Intent(this,AlarmReceiver.class);
         pi=PendingIntent.getBroadcast(this,0,intent,0);
@@ -70,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
 
-        preferences=this.getSharedPreferences(Login.PREF,MODE_PRIVATE);
+        preferences=this.getSharedPreferences(Login.PREF, MODE_PRIVATE);
         editor=preferences.edit();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -80,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        if(ServerRequest.status==1)
+            displayFragment(0);
 
     }
 
@@ -136,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
     private void startReciever(){
         AlarmManager alarmManager=(AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
 
-        int interval=3000;
+        int interval=60000;
         alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),interval,pi);
 
         ComponentName componentName=new ComponentName(this,MainActivity.class);

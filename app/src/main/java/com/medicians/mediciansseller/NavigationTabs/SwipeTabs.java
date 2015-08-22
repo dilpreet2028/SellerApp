@@ -12,9 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.medicians.mediciansseller.R;
-import com.medicians.mediciansseller.Tabs.Accepted;
-import com.medicians.mediciansseller.Tabs.Delivered;
-import com.medicians.mediciansseller.Tabs.Dispatched;
+import com.medicians.mediciansseller.Tabs.*;
+import com.medicians.mediciansseller.Tabs.Process;
 import com.medicians.mediciansseller.slidingtab.SlidingTabLayout;
 
 /**
@@ -34,14 +33,14 @@ public class SwipeTabs extends Fragment {
         viewPagerAdapter=new ViewPagerAdapter(getActivity().getSupportFragmentManager());
         viewPager.setOffscreenPageLimit(0);
 
-        //slidingTabLayout.setDistributeEvenly(true);
+        slidingTabLayout.setDistributeEvenly(false);
         viewPager.setAdapter(viewPagerAdapter);
         slidingTabLayout.setViewPager(viewPager);
         return view;
     }
 
 
-    private class ViewPagerAdapter extends FragmentStatePagerAdapter {
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -50,20 +49,20 @@ public class SwipeTabs extends Fragment {
         public Fragment getItem(int position) {
             if (position==0) {
                 flag=0;
-                return new Accepted();
+                return new NewOrder();
             }
             if (position==1) {
                 flag=1;
-                return new Dispatched();
+                return new Process();
             }
             if (position==2) {
                 flag=2;
-                return new Delivered();
+                return new Dispatched();
             }
 
             if (position==3) {
                 flag=2;
-                return new Delivered();
+                return new Attempt();
             }
             if (position==4) {
                 flag=2;

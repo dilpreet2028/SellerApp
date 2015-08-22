@@ -6,17 +6,30 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.medicians.mediciansseller.Adapter.ContentAdapter;
+import com.medicians.mediciansseller.Adapter.NewOrderAdapter;
+import com.medicians.mediciansseller.Models.Content;
 import com.medicians.mediciansseller.Models.NewOrderModel;
 import com.medicians.mediciansseller.NewOrderDetails;
-import com.medicians.mediciansseller.R;
 import com.medicians.mediciansseller.PopulateList;
+import com.medicians.mediciansseller.R;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +37,13 @@ import java.util.List;
 /**
  * Created by dilpreet on 13/8/15.
  */
-public class Dispatched extends Fragment {
+public class Process extends Fragment {
 
     ListView listView;
     public  static ContentAdapter contentAdapter;
     public static List<NewOrderModel> list;
-     NewOrderModel newOrder;
-    ProgressDialog progressDialog;
+    NewOrderModel newOrder;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,8 +51,8 @@ public class Dispatched extends Fragment {
 
 
         listView=(ListView)view.findViewById(R.id.contentList);
-       list=new ArrayList<>();
-        contentAdapter=new ContentAdapter(getActivity(),list,2);
+        list=new ArrayList<>();
+        contentAdapter=new ContentAdapter(getActivity(),list,1);
         listView.setAdapter(contentAdapter);
 
 
@@ -64,18 +77,16 @@ public class Dispatched extends Fragment {
         if (isVisibleToUser)
         {
             list=new ArrayList<>();
-            contentAdapter=new ContentAdapter(getActivity(),list,2);
+            contentAdapter=new ContentAdapter(getActivity(),list,1);
             listView.setAdapter(contentAdapter);
 
 
-            PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorderinfo/1/dispatch",2);
+            PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorderinfo/1/process",1);
             populateList.getData();
 
 
         }
 
     }
-
-
 
 }
