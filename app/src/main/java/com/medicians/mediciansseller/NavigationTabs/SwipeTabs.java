@@ -31,7 +31,7 @@ public class SwipeTabs extends Fragment {
         viewPager=(ViewPager)view.findViewById(R.id.viewPager);
         slidingTabLayout=(SlidingTabLayout)view.findViewById(R.id.tabs);
         viewPagerAdapter=new ViewPagerAdapter(getActivity().getSupportFragmentManager());
-        viewPager.setOffscreenPageLimit(0);
+        //viewPager.setOffscreenPageLimit(0);
 
         slidingTabLayout.setDistributeEvenly(false);
         viewPager.setAdapter(viewPagerAdapter);
@@ -57,28 +57,22 @@ public class SwipeTabs extends Fragment {
             }
             if (position==2) {
                 flag=2;
-                return new Dispatched();
+                return new Attempt();
             }
+
 
             if (position==3) {
                 flag=2;
-                return new Attempt();
-            }
-            if (position==4) {
-                flag=2;
                 return new Delivered();
             }
-            if (position==5) {
-                flag=2;
-                return new Delivered();
-            }
+
 
             return null;
         }
 
         @Override
         public int getCount() {
-            return 5;
+            return 4;
         }
 
         @Override
@@ -86,15 +80,13 @@ public class SwipeTabs extends Fragment {
             if (position==0)
                 return "New Order";
             if (position==1)
-                return "Process";
+                return "Processed";
             if (position==2)
-                return "Dispatch";
+                return "Dispatched";
+
             if (position==3)
-                return "Attempt";
-            if (position==4)
                 return "Compeleted";
-            if (position==5)
-                return "Cancelled";
+
             return super.getPageTitle(position);
         }
     }

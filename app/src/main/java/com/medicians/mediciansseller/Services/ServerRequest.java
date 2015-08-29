@@ -7,13 +7,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
+import android.widget.RemoteViews;
+import android.widget.RemoteViews.RemoteView;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.medicians.mediciansseller.AppController;
 import com.medicians.mediciansseller.MainActivity;
 import com.medicians.mediciansseller.R;
 
@@ -30,14 +36,17 @@ public class ServerRequest {
     Context context;
     int count;
     public static int status;
+    public static String currentOrderId;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     ArrayList<String> list;
+    static  int notify;
 
     public ServerRequest(Context context) {
         super();
         this.context=context;
         list=new ArrayList<>();
+        notify=0;
 
          //preferences=context.getSharedPreferences("array",Context.MODE_PRIVATE);
         //editor=preferences.edit();
@@ -74,7 +83,8 @@ public class ServerRequest {
                                jsonArray =new JSONArray(response);
                                 for (int i=0;i<jsonArray.length();i++){
                                         object=jsonArray.getJSONObject(i);
-                                        templist.add(object.getString("order_id"));
+                                    currentOrderId=object.getString("order_id");
+                                        templist.add(currentOrderId);
                                     count++;
 
                                 }
@@ -108,20 +118,44 @@ public class ServerRequest {
     }
 
 
+
     private void notification(){
         PendingIntent pi=PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
+
         status=1;
-        NotificationManager nm=(NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        NotificationCompat.Builder notify=new NotificationCompat.Builder(context)
-                .setSmallIcon(R.drawable.notification_template_icon_bg)
-                .setContentTitle("Hello!!")
-                .setContentInfo("You have " + count + " new orders")
-                .setContentIntent(pi)
-                .setDefaults(Notification.DEFAULT_ALL);
-        nm.notify(11,notify.build());
+        NotificationManager manager=(NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder builder=new NotificationCompat.Builder(context)
+                                            .setContentIntent(pi)
+                                            .setAutoCancel(true)
+                                            .setSmallIcon(R.mipmap.ic_launcher);
+
+        if(count==1){
+            builder.setContent(getRemoteView(count));
+        }
+        else{
+            builder.setContentText("You have " + count + "new orders");
+            builder.setContentTitle("Hi there");
+        }
+        manager.notify(100,builder.build());
+
+    }
 
 
+    private RemoteViews getRemoteView(int count){
 
+        Intent acceptIntent= new Intent(context, MainActivity.class);
+
+
+        PendingIntent accept=PendingIntent.getActivity(context, 0, acceptIntent, 0);
+
+        notify=1;
+        Log.d("mytag",currentOrderId);
+
+        RemoteViews view=new RemoteViews(context.getPackageName(),R.layout.notification_layout);
+        view.setTextViewText(R.id.notifyText,"You have "+count+" orders.");
+        view.setOnClickPendingIntent(R.id.notifyAccept, accept);
+
+        return view;
     }
 
 

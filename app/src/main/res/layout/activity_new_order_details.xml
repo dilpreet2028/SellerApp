@@ -35,21 +35,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Accept"
-            android:id="@+id/acceptButton"/>
+            android:id="@+id/acceptButtonA"/>
 
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Accept With Delay"
-            android:id="@+id/acceptDelayButton"/>
+            android:id="@+id/acceptDelayButtonA"/>
 
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reject"
-            android:id="@+id/rejectButton"/>
+            android:id="@+id/rejectButtonA"/>
     </TableRow>
 
 

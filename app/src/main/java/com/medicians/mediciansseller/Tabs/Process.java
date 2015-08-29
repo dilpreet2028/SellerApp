@@ -20,7 +20,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.medicians.mediciansseller.Adapter.ContentAdapter;
-import com.medicians.mediciansseller.Adapter.NewOrderAdapter;
 import com.medicians.mediciansseller.Models.Content;
 import com.medicians.mediciansseller.Models.NewOrderModel;
 import com.medicians.mediciansseller.NewOrderDetails;

@@ -77,5 +77,26 @@
             android:id="@+id/rejectG"/>
     </TableRow>
 
+
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:id="@+id/rowThree"
+        >
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Compeleted"
+
+            android:id="@+id/acceptFinal"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Attempt"
+            android:id="@+id/attempt"/>
+    </TableRow>
 </TableLayout>
 

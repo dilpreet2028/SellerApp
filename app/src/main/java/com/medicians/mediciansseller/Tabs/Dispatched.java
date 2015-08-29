@@ -30,7 +30,7 @@ public class Dispatched extends Fragment {
     public  static ContentAdapter contentAdapter;
     public static List<NewOrderModel> list;
      NewOrderModel newOrder;
-    ProgressDialog progressDialog;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class Dispatched extends Fragment {
         {
             list=new ArrayList<>();
             contentAdapter=new ContentAdapter(getActivity(),list,2);
-            listView.setAdapter(contentAdapter);
+           listView.setAdapter(contentAdapter);
 
 
             PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorderinfo/1/dispatch",2);

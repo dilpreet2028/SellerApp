@@ -50,7 +50,7 @@ public class PopulateList {
         progressDialog.show();
 
 
-
+    String data;
         StringRequest request=new StringRequest(url,
                 new Response.Listener<String>() {
                     @Override
@@ -58,7 +58,7 @@ public class PopulateList {
 
                         //Toast.makeText(context,response,Toast.LENGTH_LONG).show();
                             parseJSON(response);
-
+                        Log.d("mytag", url+":"+response);
 
                     }
                 },
@@ -66,6 +66,7 @@ public class PopulateList {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("Tag", error.toString());
+
                         progressDialog.dismiss();
 
                     }
@@ -83,8 +84,20 @@ public class PopulateList {
         JSONArray array;
         try{
             array=new JSONArray(json);
+
+            if(index==2)
             Dispatched.list.clear();
+
+            if(index==1)
             Process.list.clear();
+
+            if(index==3)
+            Attempt.list.clear();
+
+            if(index==10)
+                NewOrder.list.clear();
+
+            Log.d("mytag","in For");
 
             for(int i=0;i<array.length();i++){
 
@@ -92,6 +105,7 @@ public class PopulateList {
 
                 if(object.getString("status").compareToIgnoreCase("Cancel")!=0)
                 {
+
                     NewOrderModel item = new NewOrderModel();
                     item.setCommission(object.getString("commission"));
                     item.setDelivery_time(object.getString("delivery_time"));
@@ -100,41 +114,101 @@ public class PopulateList {
                     item.setOrdertime(object.getString("ordertime"));
                     item.setSeller_id(object.getString("seller_id"));
                     item.setStatus(object.getString("status"));
-                    //item.setStatus1(object.getString("status1"));
+                    item.setStatus1(object.getString("status1"));
                     item.setUser_id(object.getString("user_id"));
 
                     if(index==1){
                         Process.list.add(item);
+                       // Log.d("mytag", Process.list.toString());
                         Process.contentAdapter.notifyDataSetChanged();
-                        Log.d("tag","in one");
+                        Log.d("mytag","in one");
                     }
 
                     if(index==2) {
                         Dispatched.list.add(item);
                         Dispatched.contentAdapter.notifyDataSetChanged();
-                        Log.d("tag", "in two");
+                      //  Log.d("mytag", Dispatched.list.toString());
+                        Log.d("mytag", "in two");
+                    }
+
+                    if(index==3){
+                        Attempt.list.add(item);
+                        Attempt.attemptAdapter.notifyDataSetChanged();
+                       // Log.d("mytag", Attempt.list.toString());
+                        Log.d("mytag", "in three");
+                    }
+
+
+                    if(index==4){
+                        Delivered.list.add(item);
+                        Delivered.attemptAdapter.notifyDataSetChanged();
+                    }
+
+                    if(index==10){
+                        NewOrder.list.add(item);
+                        NewOrder.contentAdapter.notifyDataSetChanged();
                     }
                 }
 
 
             }
+
+
+            notifyAdapters();
            // Toast.makeText(context, "One: "+Dispatched.list.toString(), Toast.LENGTH_LONG).show();
            // Dispatched.contentAdapter.notifyDataSetChanged();
             if(progressDialog.isShowing())
             {
-                Log.d("Tag", "ccclose it");
+
                 progressDialog.dismiss();
-                //progressDialog.cancel();
+                progressDialog.cancel();
             }
 
         }
         catch (JSONException e){
-            Log.d("Tag",e.toString());
+            Log.d("mytag","JSON error"+e.toString());
+
             progressDialog.dismiss();
+            progressDialog.cancel();
+
         }
 
 
 
+    }
+
+
+    private void notifyAdapters(){
+        if(index==1){
+
+            Process.contentAdapter.notifyDataSetChanged();
+            Log.d("mytag","in one");
+        }
+
+        if(index==2) {
+
+            Dispatched.contentAdapter.notifyDataSetChanged();
+            //  Log.d("mytag", Dispatched.list.toString());
+            Log.d("mytag", "in two");
+        }
+
+        if(index==3){
+
+            Attempt.attemptAdapter.notifyDataSetChanged();
+            // Log.d("mytag", Attempt.list.toString());
+            Log.d("mytag", "in three");
+        }
+
+
+        if(index==4){
+
+            Delivered.attemptAdapter.notifyDataSetChanged();
+        }
+
+        if(index==10){
+
+            NewOrder.contentAdapter.notifyDataSetChanged();
+        }
     }
 
 }

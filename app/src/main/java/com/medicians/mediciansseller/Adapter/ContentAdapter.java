@@ -1,5 +1,6 @@
 package com.medicians.mediciansseller.Adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -30,9 +32,10 @@ public class ContentAdapter extends BaseAdapter{
     Context context;
     LayoutInflater inflater;
     TextView orderidView,deliveryView;
-    Button setButton,rejectG;
-    TableRow row;
+    Button setButton,rejectG,accept,acceptWithDelay,reject;
+    TableRow row,rowNew;
     int time,index;
+     String orderId;
     String status;
 
     public ContentAdapter(Context context,List<NewOrderModel> list,int index) {
@@ -42,17 +45,22 @@ public class ContentAdapter extends BaseAdapter{
         this.index = index;
 
         if (index == 1)
-            status = "dispatch";
-        if (index == 2)
             status = "attempt";
+       // if (index == 2)
+         //   status = "attempt";
+
+        if(index==10)
+            status="process";
     }
 
     /*
         index==1 for Process tab
         index==2 for Dispatch tab
 
-
+        index=10 for new tab
      */
+
+
     @Override
     public int getCount() {
         return list.size();
@@ -65,7 +73,7 @@ public class ContentAdapter extends BaseAdapter{
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final String orderId;
+
         if(inflater==null)
             inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if(convertView==null)
@@ -75,11 +83,18 @@ public class ContentAdapter extends BaseAdapter{
         deliveryView=(TextView)convertView.findViewById(R.id.deliveryTime);
         setButton=(Button)convertView.findViewById(R.id.setButton);
         rejectG=(Button)convertView.findViewById(R.id.rejectG);
+        accept=(Button)convertView.findViewById(R.id.acceptButton);
+        acceptWithDelay=(Button)convertView.findViewById(R.id.acceptDelayButton);
+        reject=(Button)convertView.findViewById(R.id.rejectButton);
 
         row=(TableRow)convertView.findViewById(R.id.rowTwo);
+        rowNew=(TableRow)convertView.findViewById(R.id.rowOne);
 
-        row.setVisibility(View.VISIBLE);
+        if(index!=10)
+            row.setVisibility(View.VISIBLE);
 
+        if (index==10)
+            rowNew.setVisibility(View.VISIBLE);
 
         if(index==1)
             setButton.setText("Dispatch");
@@ -93,6 +108,37 @@ public class ContentAdapter extends BaseAdapter{
         orderidView.setText(list.get(position).getOrder_id());
         deliveryView.setText(list.get(position).getDelivery_time());
 
+
+        ////FOR THE NEWORDERS
+
+
+        accept.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                postData("http://medicians.herokuapp.com/update_status1/"+orderId+"/process");
+            }
+        });
+
+        acceptWithDelay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                createDialog();
+
+            }
+        });
+
+        reject.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                postData("http://medicians.herokuapp.com/update_status/" + orderId + "/cancel");
+            }
+        });
+
+
+        ////
 
         setButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -129,18 +175,21 @@ public class ContentAdapter extends BaseAdapter{
             @Override
             public void onResponse(String response) {
                 Log.d("Mytag", "Added");
+                refreshList();
+
             }
         },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        Log.d("mytag",error+ "");
                     }
                 });
 
         AppController.getInstance().addToRequestQueue(request);
 
-        refreshList();
+        Log.d("mytag","outside");
+
     }
 
 
@@ -156,7 +205,51 @@ public class ContentAdapter extends BaseAdapter{
             PopulateList testClass=new PopulateList(context,"http://medicians.herokuapp.com/sellerorderinfo/1/dispatch",2);
             testClass.getData();
         }
+
+        if(index==10){
+            PopulateList testClass=new PopulateList(context,"http://medicians.herokuapp.com/sellerorderinfo/1/new",10);
+            testClass.getData();
+        }
+
     }
+
+
+    private void createDialog(){
+
+
+        Button done;
+
+
+        final Dialog dialog=new Dialog(context);
+        dialog.setTitle("Delay Time");
+        dialog.setContentView(R.layout.delay_time);
+        dialog.show();
+
+
+
+        final EditText editText=(EditText)dialog.findViewById(R.id.delayTime);
+        done=(Button)dialog.findViewById(R.id.doneB);
+
+
+
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String timeStr;
+                timeStr=editText.getText().toString();
+                time=Integer.parseInt(timeStr);
+
+                dialog.cancel();
+                postData("http://medicians.herokuapp.com/update_status/" + orderId + "/delay+" + time);
+                postData("http://medicians.herokuapp.com/update_status1/"+orderId+"/process");
+                refreshList();
+
+            }
+        });
+
+
+    }
+
 
 
 }

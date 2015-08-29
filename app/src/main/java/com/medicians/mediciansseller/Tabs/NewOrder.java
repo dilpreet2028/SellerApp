@@ -1,6 +1,9 @@
 package com.medicians.mediciansseller.Tabs;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,17 +16,21 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.medicians.mediciansseller.Adapter.ContentAdapter;
-import com.medicians.mediciansseller.Adapter.NewOrderAdapter;
+
+import com.medicians.mediciansseller.AppController;
 import com.medicians.mediciansseller.Models.Content;
 import com.medicians.mediciansseller.Models.NewOrderModel;
 import com.medicians.mediciansseller.NewOrderDetails;
+import com.medicians.mediciansseller.PopulateList;
 import com.medicians.mediciansseller.R;
+import com.medicians.mediciansseller.Services.ServerRequest;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,11 +43,13 @@ import java.util.List;
  * Created by dilpreet on 10/8/15.
  */
 public class NewOrder extends Fragment {
+
+
     ListView listView;
-    NewOrderAdapter newOrderAdapter;
-    List<NewOrderModel> list;
-    public static NewOrderModel newOrder;
-    ProgressDialog progressDialog;
+    public  static ContentAdapter contentAdapter;
+    public static List<NewOrderModel> list;
+    NewOrderModel newOrder;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -49,18 +58,19 @@ public class NewOrder extends Fragment {
 
         listView=(ListView)view.findViewById(R.id.contentList);
         list=new ArrayList<>();
+        contentAdapter=new ContentAdapter(getActivity(),list,10);
+        listView.setAdapter(contentAdapter);
 
 
-        newOrderAdapter=new NewOrderAdapter(getActivity(),list);
-        listView.setAdapter(newOrderAdapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                newOrder=list.get(position);
+                newOrder = list.get(position);
                 startActivity(new Intent(getActivity(), NewOrderDetails.class));
             }
         });
+
         return view;
     }
 
@@ -74,81 +84,11 @@ public class NewOrder extends Fragment {
         if (isVisibleToUser)
         {
 
-            getData();
-            Log.d("Tag","Here");
-        }
-        else{
-            list=new ArrayList<>();
-        }
-    }
+            PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorder/1/new",10);
+            populateList.getData();
 
-
-    public void getData(){
-
-
-        progressDialog=new ProgressDialog(getActivity());
-        progressDialog.setMessage("Loading..");
-        progressDialog.show();
-
-        String url="http://medicians.herokuapp.com/sellerorder/1/new";
-        RequestQueue queue= Volley.newRequestQueue(getActivity());
-        StringRequest request=new StringRequest(url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        parseJSON(response);
-                        Log.d("tag", response);
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("Tag", error.toString());
-                        Toast.makeText(getActivity(), "Error: " + error, Toast.LENGTH_LONG).show();
-                    }
-                });
-        queue.add(request);
-    }
-
-    private void parseJSON(String json){
-
-        JSONArray array;
-        try{
-            array=new JSONArray(json);
-            list.clear();
-            for(int i=0;i<array.length();i++){
-                JSONObject object=array.getJSONObject(i);
-
-                    NewOrderModel item = new NewOrderModel();
-
-                    item.setCommission(object.getString("commission"));
-                    item.setDelivery_time(object.getString("delivery_time"));
-                    item.setOrder_id(object.getString("order_id"));
-                    item.setOrderdate(object.getString("orderdate"));
-                    item.setOrdertime(object.getString("ordertime"));
-                    item.setSeller_id(object.getString("seller_id"));
-                    item.setStatus(object.getString("status"));
-                    item.setStatus1(object.getString("status1"));
-                    item.setUser_id(object.getString("user_id"));
-
-                    list.add(item);
-
-                    newOrderAdapter.notifyDataSetChanged();
-
-            }
-
-            if(progressDialog.isShowing())
-            {
-                Log.d("Tag", "ccclose it");
-                progressDialog.dismiss();
-                progressDialog.cancel();
-            }
 
         }
-        catch (JSONException e){
-            Log.d("Tag",e.toString());
-        }
-
 
     }
 }

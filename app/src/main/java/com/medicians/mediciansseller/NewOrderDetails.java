@@ -15,7 +15,7 @@ public class NewOrderDetails extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_order_details);
-        order= NewOrder.newOrder;
+        //order= NewOrder.newOrder;
         Toast.makeText(this,order.getOrder_id()+" "+order.getCommission(),Toast.LENGTH_LONG).show();
     }
 
