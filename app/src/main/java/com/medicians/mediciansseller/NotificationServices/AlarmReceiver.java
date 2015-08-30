@@ -1,4 +1,4 @@
-package com.medicians.mediciansseller.Services;
+package com.medicians.mediciansseller.NotificationServices;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,7 +16,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         Log.d("mytag", "Service going to start");
         Toast.makeText(context,"Service started",Toast.LENGTH_LONG).show();
-        context.startService(new Intent(context, NewOrderService.class));
+        context.startService(new Intent(context, NofityService.class));
 
     }
 }

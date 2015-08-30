@@ -140,6 +140,8 @@ public class ContentAdapter extends BaseAdapter{
 
         ////
 
+
+
         setButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,7 +209,7 @@ public class ContentAdapter extends BaseAdapter{
         }
 
         if(index==10){
-            PopulateList testClass=new PopulateList(context,"http://medicians.herokuapp.com/sellerorderinfo/1/new",10);
+            PopulateList testClass=new PopulateList(context,"http://medicians.herokuapp.com/sellerorder/1/new",10);
             testClass.getData();
         }
 

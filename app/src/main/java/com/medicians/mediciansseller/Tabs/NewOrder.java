@@ -1,10 +1,10 @@
 package com.medicians.mediciansseller.Tabs;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.ProgressDialog;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -16,25 +16,13 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.medicians.mediciansseller.Adapter.ContentAdapter;
 
-import com.medicians.mediciansseller.AppController;
-import com.medicians.mediciansseller.Models.Content;
 import com.medicians.mediciansseller.Models.NewOrderModel;
 import com.medicians.mediciansseller.NewOrderDetails;
+import com.medicians.mediciansseller.NewOrderServices.NewOrderReceiver;
 import com.medicians.mediciansseller.PopulateList;
 import com.medicians.mediciansseller.R;
-import com.medicians.mediciansseller.Services.ServerRequest;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,11 +37,17 @@ public class NewOrder extends Fragment {
     public  static ContentAdapter contentAdapter;
     public static List<NewOrderModel> list;
     NewOrderModel newOrder;
+    Intent intent;
+    PendingIntent pendingIntent;
+    AlarmManager alarmManager;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.global,null);
+
+
+
 
 
         listView=(ListView)view.findViewById(R.id.contentList);
@@ -86,9 +80,28 @@ public class NewOrder extends Fragment {
 
             PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorder/1/new",10);
             populateList.getData();
-
+            registerAlarm();
 
         }
+        else
+            unRegisterAlarm();
 
     }
+
+  private void registerAlarm(){
+      intent=new Intent(getActivity(), NewOrderReceiver.class);
+      pendingIntent=PendingIntent.getBroadcast(getActivity(),0,intent,0);
+      alarmManager =(AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
+      Log.d("Mytag", "Registered");
+      alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),3000,pendingIntent);
+  }
+
+  private void unRegisterAlarm(){
+      Log.d("Mytag", "UnRegistered");
+      if(alarmManager!=null)
+          alarmManager.cancel(pendingIntent);
+
+
+  }
+
 }

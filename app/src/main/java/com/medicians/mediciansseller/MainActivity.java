@@ -25,8 +25,8 @@ import android.support.v7.widget.Toolbar;
 import com.medicians.mediciansseller.NavigationTabs.DuePayment;
 import com.medicians.mediciansseller.NavigationTabs.Statement;
 import com.medicians.mediciansseller.NavigationTabs.SwipeTabs;
-import com.medicians.mediciansseller.Services.AlarmReceiver;
-import com.medicians.mediciansseller.Services.ServerRequest;
+import com.medicians.mediciansseller.NotificationServices.AlarmReceiver;
+import com.medicians.mediciansseller.NotificationServices.ServerRequest;
 
 public class MainActivity extends AppCompatActivity {
 
