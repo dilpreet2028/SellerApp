@@ -38,6 +38,7 @@ public class NewOrder extends Fragment {
     public static List<NewOrderModel> list;
     NewOrderModel newOrder;
     Intent intent;
+    public static PopulateList populateList;;
     PendingIntent pendingIntent;
     AlarmManager alarmManager;
 
@@ -77,8 +78,7 @@ public class NewOrder extends Fragment {
 
         if (isVisibleToUser)
         {
-
-            PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorder/1/new",10);
+            populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorder/1/new",10);
             populateList.getData();
             registerAlarm();
 
@@ -88,6 +88,10 @@ public class NewOrder extends Fragment {
 
     }
 
+    public static void changeList(){
+
+        populateList.getData();
+    }
   private void registerAlarm(){
       intent=new Intent(getActivity(), NewOrderReceiver.class);
       pendingIntent=PendingIntent.getBroadcast(getActivity(),0,intent,0);

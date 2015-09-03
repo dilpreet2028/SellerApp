@@ -121,7 +121,7 @@ public class AttemptAdapter extends BaseAdapter {
         else  if(old.compareToIgnoreCase("attempt")==0)
             newStr="attempt_1";
 
-
+        Log.d("mytag","after: "+newStr);
         return newStr;
     }
 
@@ -148,6 +148,7 @@ public class AttemptAdapter extends BaseAdapter {
             public void onClick(View v) {
                 int id=radioGroup.getCheckedRadioButtonId();
 
+                Log.d("Mytag","Before: "+status);
                 String reason="";
                 if(R.id.radioButton==id)
                 {
