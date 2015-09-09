@@ -107,7 +107,7 @@ public class PopulateList {
                 {
 
                     NewOrderModel item = new NewOrderModel();
-                    item.setCommission(object.getString("commission"));
+
                     item.setDelivery_time(object.getString("delivery_time"));
                     item.setOrder_id(object.getString("order_id"));
                     item.setOrderdate(object.getString("orderdate"));

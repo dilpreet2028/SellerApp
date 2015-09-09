@@ -74,9 +74,7 @@ public class Attempt extends Fragment {
 
         if (isVisibleToUser)
         {
-            list=new ArrayList<>();
-            attemptAdapter=new AttemptAdapter(getActivity(),list,1);
-             listView.setAdapter(attemptAdapter);
+           
 
 
             PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorderinfo/1/attempt",3);

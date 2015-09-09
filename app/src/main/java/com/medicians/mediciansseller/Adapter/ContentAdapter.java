@@ -45,9 +45,9 @@ public class ContentAdapter extends BaseAdapter{
         this.index = index;
 
         if (index == 1)
-            status = "attempt";
-       // if (index == 2)
-         //   status = "attempt";
+            status = "dispatch";
+       if (index == 2)
+          status = "attempt";
 
         if(index==10)
             status="process";
@@ -72,12 +72,13 @@ public class ContentAdapter extends BaseAdapter{
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         if(inflater==null)
             inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if(convertView==null)
-            convertView=inflater.inflate(R.layout.new_order_item,null);
+        if(convertView==null)orderId=list.get(position).getOrder_id();
+
+        convertView=inflater.inflate(R.layout.new_order_item,null);
 
         orderidView=(TextView)convertView.findViewById(R.id.orderId);
         deliveryView=(TextView)convertView.findViewById(R.id.deliveryTime);
@@ -97,13 +98,12 @@ public class ContentAdapter extends BaseAdapter{
             rowNew.setVisibility(View.VISIBLE);
 
         if(index==1)
-            setButton.setText("Dispatch");
+            setButton.setText("Ready to dispatch");
 
         if(index==2)
-            setButton.setText("Attempt");
+            setButton.setText("Dispatch");
 
 
-        orderId=list.get(position).getOrder_id();
 
         orderidView.setText(list.get(position).getOrder_id());
         deliveryView.setText(list.get(position).getDelivery_time());
@@ -115,7 +115,7 @@ public class ContentAdapter extends BaseAdapter{
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                orderId=list.get(position).getOrder_id();
                 postData("http://medicians.herokuapp.com/update_status1/"+orderId+"/process");
             }
         });
@@ -123,6 +123,7 @@ public class ContentAdapter extends BaseAdapter{
         acceptWithDelay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                orderId=list.get(position).getOrder_id();
 
                 createDialog();
 
@@ -132,6 +133,7 @@ public class ContentAdapter extends BaseAdapter{
         reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                orderId=list.get(position).getOrder_id();
 
                 postData("http://medicians.herokuapp.com/update_status/" + orderId + "/cancel");
             }

@@ -41,11 +41,12 @@ public class Delivered extends Fragment {
     public  static AttemptAdapter attemptAdapter;
     public static List<NewOrderModel> list;
     NewOrderModel newOrder;
+    View view;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.global,null);
+        view=inflater.inflate(R.layout.global,null);
 
 
         listView=(ListView)view.findViewById(R.id.contentList);
@@ -74,10 +75,6 @@ public class Delivered extends Fragment {
 
         if (isVisibleToUser)
         {
-            list=new ArrayList<>();
-            attemptAdapter=new AttemptAdapter(getActivity(),list,2);
-            listView.setAdapter(attemptAdapter);
-
 
             PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorderinfo/1/compeleted",4);
             populateList.getData();

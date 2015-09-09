@@ -92,7 +92,7 @@ public class OrderHistory extends Fragment {
                 History item=new History();
                 item.setDate(object.getString("orderdate"));
                 item.setOrder(object.getString("order_id"));
-                item.setStatus(object.getString("status"));
+                item.setStatus(object.getString("status1"));
                 item.setTime(object.getString("ordertime"));
                 list.add(item);
                 Log.d("mytag","added");

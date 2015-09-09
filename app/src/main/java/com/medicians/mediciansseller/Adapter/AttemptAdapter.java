@@ -82,8 +82,8 @@ public class AttemptAdapter extends BaseAdapter {
         attempt=(Button)convertView.findViewById(R.id.attempt);
         //Log.d()
 
-        orderId=list.get(position).getOrder_id();
-        status=list.get(position).getStatus1();
+
+
 
 
 
@@ -97,7 +97,7 @@ public class AttemptAdapter extends BaseAdapter {
         acceptFinal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("mytag","accept");
+                orderId=list.get(position).getOrder_id();
                 postData("http://medicians.herokuapp.com/update_status1/" + orderId + "/compeleted");
             }
         });
@@ -105,6 +105,7 @@ public class AttemptAdapter extends BaseAdapter {
         attempt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                orderId=list.get(position).getOrder_id();
                 status=list.get(position).getStatus1();
                 Log.d("mytag","attempt :"+status);
                 createDialog();
@@ -117,9 +118,13 @@ public class AttemptAdapter extends BaseAdapter {
         String newStr="";
 
         if(old.compareToIgnoreCase("attempt_1")==0)
+        {   Log.d("mytag","oldL "+old);
             newStr="attempt_2";
+        }
         else  if(old.compareToIgnoreCase("attempt")==0)
+        {   Log.d("mytag","old: "+old);
             newStr="attempt_1";
+        }
 
         Log.d("mytag","after: "+newStr);
         return newStr;
@@ -203,19 +208,20 @@ public class AttemptAdapter extends BaseAdapter {
             @Override
             public void onResponse(String response) {
                 Log.d("Mytag", "Added");
+                refreshList();
 
             }
         },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        Log.d("mytag",error+"");
                     }
                 });
 
         AppController.getInstance().addToRequestQueue(request);
 
-        refreshList();
+
     }
 
 

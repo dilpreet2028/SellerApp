@@ -62,7 +62,9 @@ public class NewOrder extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 newOrder = list.get(position);
-                startActivity(new Intent(getActivity(), NewOrderDetails.class));
+                Intent intent=new Intent(getActivity(), NewOrderDetails.class);
+               // intent.putExtra("orderid",newOrder.getOrder_id());
+                startActivity(intent);
             }
         });
 

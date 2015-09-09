@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.support.v7.widget.Toolbar;
 
 import com.medicians.mediciansseller.NavigationTabs.DuePayment;
+import com.medicians.mediciansseller.NavigationTabs.Home;
 import com.medicians.mediciansseller.NavigationTabs.OrderHistory;
 import com.medicians.mediciansseller.NavigationTabs.Statement;
 import com.medicians.mediciansseller.NavigationTabs.SwipeTabs;
@@ -32,7 +33,7 @@ import com.medicians.mediciansseller.NotificationServices.ServerRequest;
 public class MainActivity extends AppCompatActivity {
 
     ListView listView;
-    String[] list={"Tabs","Statements","Due Payments","Order History"};
+    String[] list={"Home","Tabs","Statements","Due Payments","Order History"};
     ArrayAdapter<String> listadapter;
     DrawerLayout drawerLayout;
     Toolbar toolbar;
@@ -93,22 +94,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        displayFragment(0);
+
         if(ServerRequest.status==1)
-            displayFragment(0);
+            displayFragment(1);
 
     }
 
     private void displayFragment(int pos){
         Fragment fragment=null;
         switch (pos){
-            case 0: fragment=new SwipeTabs();
+            case 0: fragment=new Home();
                     break;
-            case 1: fragment=new Statement();
+            case 1: fragment=new SwipeTabs();
                     break;
-            case 2: fragment=new DuePayment();
+            case 2: fragment=new Statement();
+                    break;
+            case 3: fragment=new DuePayment();
                 break;
 
-            case 3: fragment=new OrderHistory();
+            case 4: fragment=new OrderHistory();
                 break;
         }
         FragmentManager manager=getSupportFragmentManager();

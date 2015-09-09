@@ -40,7 +40,7 @@ public class SwipeTabs extends Fragment {
     }
 
 
-    private class ViewPagerAdapter extends FragmentPagerAdapter {
+    private class ViewPagerAdapter extends FragmentStatePagerAdapter {
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -55,13 +55,19 @@ public class SwipeTabs extends Fragment {
                 flag=1;
                 return new Process();
             }
+
             if (position==2) {
+                flag=2;
+                return new Dispatched();
+            }
+
+            if (position==3) {
                 flag=2;
                 return new Attempt();
             }
 
 
-            if (position==3) {
+            if (position==4) {
                 flag=2;
                 return new Delivered();
             }
@@ -72,7 +78,7 @@ public class SwipeTabs extends Fragment {
 
         @Override
         public int getCount() {
-            return 4;
+            return 5;
         }
 
         @Override
@@ -80,11 +86,14 @@ public class SwipeTabs extends Fragment {
             if (position==0)
                 return "New Order";
             if (position==1)
-                return "Processed";
+                return "Processing";
             if (position==2)
-                return "Dispatched";
+                return "To be Dispatched";
 
-            if (position==3)
+            if(position==3)
+                return "Attempt";
+
+            if (position==4)
                 return "Compeleted";
 
             return super.getPageTitle(position);
