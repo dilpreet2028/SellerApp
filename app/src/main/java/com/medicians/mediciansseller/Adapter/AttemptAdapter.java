@@ -114,7 +114,7 @@ public class AttemptAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private String selectStatus(String old){
+    public static String selectStatus(String old){
         String newStr="";
 
         if(old.compareToIgnoreCase("attempt_1")==0)

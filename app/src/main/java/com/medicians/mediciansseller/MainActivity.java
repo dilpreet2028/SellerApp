@@ -32,10 +32,11 @@ import com.medicians.mediciansseller.NotificationServices.ServerRequest;
 
 public class MainActivity extends AppCompatActivity {
 
-    ListView listView;
+    private static ListView listView;
     String[] list={"Home","Tabs","Statements","Due Payments","Order History"};
     ArrayAdapter<String> listadapter;
-    DrawerLayout drawerLayout;
+    private static DrawerLayout drawerLayout;
+    private static  FragmentManager manager;
     Toolbar toolbar;
     ActionBarDrawerToggle actionBarDrawerToggle;
     PendingIntent pi;
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
         //Starting service
        //startService(new Intent(this,NewOrderService.class));
 
-
+        manager=getSupportFragmentManager();
 
 
         setSupportActionBar(toolbar);
@@ -78,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         actionBarDrawerToggle=new ActionBarDrawerToggle(this,drawerLayout,toolbar,R.string.drawer_open,R.string.drawer_close);
 
 
-        listadapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,list);
+        listadapter=new ArrayAdapter<String>(this,R.layout.nav_list_item,list);
         listView.setAdapter(listadapter);
 
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
@@ -101,7 +102,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void displayFragment(int pos){
+
+        public static void displayFragment(int pos){
         Fragment fragment=null;
         switch (pos){
             case 0: fragment=new Home();
@@ -116,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
             case 4: fragment=new OrderHistory();
                 break;
         }
-        FragmentManager manager=getSupportFragmentManager();
+
         manager.beginTransaction().replace(R.id.container_body,fragment)
         .commit();
 

@@ -1,23 +1,32 @@
 package com.medicians.mediciansseller;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.medicians.mediciansseller.Models.NewOrderModel;
-import com.medicians.mediciansseller.Tabs.NewOrder;
+import com.medicians.mediciansseller.Adapter.AttemptAdapter;
+import com.medicians.mediciansseller.Models.Model;
+
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -32,19 +41,221 @@ public class NewOrderDetails extends AppCompatActivity {
     String orderid="a";
     ListView listView;
     OrderAdapter adapter;
+    LinearLayout row1,row2,row3;
+    int flag,time;
+    String status;
+    RadioGroup radioGroup;
+    Button setGlobal,rejectGlobal,acceptButton,delay,reject,compelete,attempt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_order_details);
         list=new ArrayList<>();
         listView=(ListView)findViewById(R.id.listDetails);
+        row1=(LinearLayout)findViewById(R.id.row1);
+        row2=(LinearLayout)findViewById(R.id.row2);
+        row3=(LinearLayout)findViewById(R.id.row3);
 
-        //orderid=getIntent().getStringExtra("orderid");
+
+        acceptButton=(Button)findViewById(R.id.acceptButton);
+        delay=(Button)findViewById(R.id.acceptDelayButton);
+        reject=(Button)findViewById(R.id.rejectButtonA);
+
+        setGlobal=(Button)findViewById(R.id.setGlobalDetails);
+        rejectGlobal=(Button)findViewById(R.id.rejectGlobalDetails);
+
+        compelete=(Button)findViewById(R.id.compeleteOrder);
+        attempt=(Button)findViewById(R.id.attemptOrder);
+
+        flag=getIntent().getIntExtra("flag", 0);
+
+        if(flag==0)
+        {
+            status="process";
+            row1.setVisibility(View.VISIBLE);
+        }
+
+        if(flag==1)
+        {
+            status="dispatch";
+            row2.setVisibility(View.VISIBLE);
+            setGlobal.setText("Ready to dispatch");
+        }
+
+        if(flag==2)
+        {   status="attempt";
+            row2.setVisibility(View.VISIBLE);
+            setGlobal.setText("Dispatch");
+        }
+
+        if(flag==3)
+        {
+            row3.setVisibility(View.VISIBLE);
+        }
+
+
+
+        orderid=getIntent().getStringExtra("orderid");
         adapter=new OrderAdapter(this);
         listView.setAdapter(adapter);
 
         getData();
        }
+
+    public void accept(View view){
+        postData("http://medicians.herokuapp.com/update_status1/" + orderid+"/process");
+    }
+    public void delay(View view){
+        createDelayDialog();
+    }
+    public void rejectOne(View view){
+        postData("http://medicians.herokuapp.com/update_status/" + orderid + "/cancel");
+    }
+    public void setIt(View view){
+        postData("http://medicians.herokuapp.com/update_status1/"+orderid + "/" + status);
+    }
+    public void rejectTwo(View view){
+        postData("http://medicians.herokuapp.com/update_status/"+orderid+"/cancel");
+    }
+    public void compelete(View view){
+        postData("http://medicians.herokuapp.com/update_status1/" + orderid + "/compeleted");
+    }
+    public void attempt(View view){
+        createAttemptDialog();
+    }
+
+
+    public void postData(String url){
+
+
+
+
+        StringRequest request=new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("Mytag", "Added");
+
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("mytag",error+ "");
+                    }
+                });
+
+        AppController.getInstance().addToRequestQueue(request);
+
+        Log.d("mytag", "outside");
+
+    }
+
+    private void createDelayDialog(){
+
+
+        Button done;
+
+
+        final Dialog dialog=new Dialog(this);
+        dialog.setTitle("Delay Time");
+        dialog.setContentView(R.layout.delay_time);
+        dialog.show();
+
+
+
+        final EditText editText=(EditText)dialog.findViewById(R.id.delayTime);
+        done=(Button)dialog.findViewById(R.id.doneB);
+
+
+
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String timeStr;
+                timeStr = editText.getText().toString();
+                time = Integer.parseInt(timeStr);
+
+
+                postData("http://medicians.herokuapp.com/update_status/" + orderid + "/delay+" + time);
+                postData("http://medicians.herokuapp.com/update_status1/" + orderid + "/process");
+
+
+            }
+        });
+
+
+    }
+
+    private void createAttemptDialog(){
+
+
+        final RadioButton reasonOther;
+        final EditText reasonText;
+        Button submitB;
+        final Dialog dialog = new Dialog(getApplicationContext());
+        dialog.setContentView(R.layout.attempt_dialog);
+        dialog.show();
+
+        reasonOther=(RadioButton)dialog.findViewById(R.id.otherReason);
+        radioGroup=(RadioGroup)dialog.findViewById(R.id.radioGroup);
+        reasonText=(EditText)dialog.findViewById(R.id.reasonText);
+        submitB=(Button)dialog.findViewById(R.id.submitRadio);
+
+
+
+
+        submitB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int id=radioGroup.getCheckedRadioButtonId();
+
+                Log.d("Mytag","Before: "+status);
+                String reason="";
+                if(R.id.radioButton==id)
+                {
+                    reason="One";
+                    postData("http://medicians.herokuapp.com/update_status1/"+orderid+"/"+AttemptAdapter.selectStatus(status)+"+"+reason);
+                }
+                else if(R.id.radioButton2==id)
+                {
+                    reason="Two";
+                    postData("http://medicians.herokuapp.com/update_status1/"+orderid+"/"+AttemptAdapter.selectStatus(status)+"+"+reason);
+                }
+                else if(R.id.otherReason==id){
+                    reason=reasonText.getText().toString();
+                    postData("http://medicians.herokuapp.com/update_status1/"+orderid+"/"+ AttemptAdapter.selectStatus(status)+"+"+reason);
+                }
+
+                else{
+                    Toast.makeText(getApplicationContext(),"Please choose a reason for attempt", Toast.LENGTH_LONG).show();
+                }
+
+
+                dialog.dismiss();
+
+
+                if(status.compareToIgnoreCase("attempt_2")==0){
+                    Toast.makeText(getApplicationContext(),"The order has been cancelled due to two attempts", Toast.LENGTH_LONG).show();
+                    postData("http://medicians.herokuapp.com/update_status/" + orderid + "/cancel");
+                }
+
+            }
+        });
+
+        reasonOther.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                reasonText.setVisibility(View.VISIBLE);
+            }
+        });
+
+
+
+
+
+    }
 
 
     private void getData(){
@@ -59,7 +270,7 @@ public class NewOrderDetails extends AppCompatActivity {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        Toast.makeText(getApplicationContext(),error+"",Toast.LENGTH_SHORT).show();
                     }
                 });
         AppController.getInstance().addToRequestQueue(request);
@@ -89,47 +300,7 @@ public class NewOrderDetails extends AppCompatActivity {
 
     }
 
-    private class Model{
-        String brandname;
-        String quantity;
-        String mrp;
 
-        public String getSp() {
-            return sp;
-        }
-
-        public void setSp(String sp) {
-            this.sp = sp;
-        }
-
-        public String getMrp() {
-            return mrp;
-        }
-
-        public void setMrp(String mrp) {
-            this.mrp = mrp;
-        }
-
-        public String getQuantity() {
-            return quantity;
-        }
-
-        public void setQuantity(String quantity) {
-            this.quantity = quantity;
-        }
-
-        public String getBrandname() {
-            return brandname;
-        }
-
-        public void setBrandname(String brandname) {
-            this.brandname = brandname;
-        }
-
-        String sp;
-
-
-    }
 
     private class OrderAdapter extends BaseAdapter{
         Context context;

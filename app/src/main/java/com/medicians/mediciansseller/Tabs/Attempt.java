@@ -59,12 +59,22 @@ public class Attempt extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 newOrder = list.get(position);
-                startActivity(new Intent(getActivity(), NewOrderDetails.class));
+                Intent intent=new Intent(getActivity(), NewOrderDetails.class);
+                intent.putExtra("orderid",newOrder.getOrder_id());
+                intent.putExtra("flag",3);
+                startActivityForResult(intent,1);
             }
         });
         return view;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorder/1/attempt",3);
+        populateList.getData();
+
+    }
 
 
 

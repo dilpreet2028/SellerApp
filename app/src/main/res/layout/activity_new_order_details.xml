@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:descendantFocusability="blocksDescendants"
     android:background="@color/white"
@@ -12,18 +12,21 @@
     <ListView
         android:layout_width="match_parent"
         android:id="@+id/listDetails"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/row"
+        android:visibility="gone"
+        android:layout_alignBottom="@+id/listDetails"
+        android:id="@+id/row1"
         >
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Accept"
+            android:onClick="accept"
             android:id="@+id/acceptButtonA"/>
 
 
@@ -31,6 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Accept With Delay"
+            android:onClick="delay"
             android:id="@+id/acceptDelayButtonA"/>
 
 
@@ -38,8 +42,52 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Reject"
+            android:onClick="rejectOne"
             android:id="@+id/rejectButtonA"/>
     </LinearLayout>
 
 
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="bottom"
+    android:id="@+id/row2"
+    android:visibility="gone"
+    android:layout_alignBottom="@+id/row1">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="setit"
+        android:onClick="setIt"
+        android:id="@+id/setGlobalDetails"/>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reject"
+        android:onClick="rejectTwo"
+        android:id="@+id/rejectGlobalDetails"/>
 </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="bottom"
+        android:id="@+id/row3"
+        android:visibility="gone"
+        android:layout_alignBottom="@+id/row1">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Compeleted"
+            android:onClick="compelete"
+            android:id="@+id/compeleteOrder"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Attempt"
+            android:onClick="attempt"
+            android:id="@+id/attemptOrder"/>
+    </LinearLayout>
+</RelativeLayout>

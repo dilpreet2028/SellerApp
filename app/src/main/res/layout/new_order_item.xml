@@ -64,11 +64,6 @@
             android:id="@+id/acceptDelayButton"/>
 
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Reject"
-            android:id="@+id/rejectButton"/>
     </TableRow>
 
     <TableRow
@@ -85,11 +80,7 @@
 
             android:id="@+id/setButton"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Reject"
-            android:id="@+id/rejectG"/>
+
     </TableRow>
 
 

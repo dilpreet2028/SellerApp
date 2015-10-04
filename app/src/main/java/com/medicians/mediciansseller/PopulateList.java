@@ -94,6 +94,9 @@ public class PopulateList {
             if(index==3)
             Attempt.list.clear();
 
+            if(index==4)
+                Delivered.list.clear();
+
             if(index==10)
                 NewOrder.list.clear();
 

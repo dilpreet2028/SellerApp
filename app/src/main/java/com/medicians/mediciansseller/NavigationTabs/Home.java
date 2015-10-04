@@ -4,16 +4,19 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.medicians.mediciansseller.AppController;
+import com.medicians.mediciansseller.MainActivity;
 import com.medicians.mediciansseller.R;
 
 import org.json.JSONArray;
@@ -28,7 +31,7 @@ public class Home extends Fragment {
     ProgressBar progressBar;
     TextView textView,newOrdersText;
     ProgressDialog progressDialog;
-
+    CardView cardView;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -37,6 +40,7 @@ public class Home extends Fragment {
         progressBar=(ProgressBar)view.findViewById(R.id.progressBarHome);
         textView=(TextView)view.findViewById(R.id.out_of_stock);
         newOrdersText=(TextView)view.findViewById(R.id.new_order);
+        cardView=(CardView)view.findViewById(R.id.card2);
 
         progressDialog=new ProgressDialog(getActivity());
         progressDialog.setMessage("Loading..");
@@ -46,6 +50,13 @@ public class Home extends Fragment {
         progressBar.setMax(100);
         getQuantityData();
         getNewData();
+
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.displayFragment(1);
+            }
+        });
         return view;
     }
 
@@ -61,7 +72,7 @@ public class Home extends Fragment {
                         try{
                             array=new JSONArray(response);
                             newOrders=array.length();
-                            newOrdersText.setText("You have "+(newOrders+1)+" new Orders");
+                            newOrdersText.setText("You have "+newOrders+" new Orders");
 
                         }catch (Exception e){
 
@@ -79,7 +90,7 @@ public class Home extends Fragment {
     }
 
     private void getQuantityData(){
-        String url="http://medicians.herokuapp.com/seller_quantity/"+"demo";
+        String url="http://medicians.herokuapp.com/seller_quantity/"+"abcmed";
         StringRequest request=new StringRequest(url,
                 new Response.Listener<String>() {
                     @Override
@@ -106,14 +117,14 @@ public class Home extends Fragment {
                             textView.setText("Out of Stock :"+(length-available)+" ");
                             progressDialog.dismiss();
                         }catch (Exception e){
-
+                            Toast.makeText(getActivity(),"Error  in:"+e,Toast.LENGTH_LONG).show();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        Toast.makeText(getActivity(),"Error :"+error,Toast.LENGTH_LONG).show();
                     }
                 });
 

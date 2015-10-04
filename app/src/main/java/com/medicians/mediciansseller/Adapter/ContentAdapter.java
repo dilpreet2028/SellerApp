@@ -76,17 +76,19 @@ public class ContentAdapter extends BaseAdapter{
 
         if(inflater==null)
             inflater=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        if(convertView==null)orderId=list.get(position).getOrder_id();
+        if(convertView==null)
 
-        convertView=inflater.inflate(R.layout.new_order_item,null);
+        convertView=inflater.inflate(R.layout.new_order_item, null);
+
+        orderId=list.get(position).getOrder_id();
 
         orderidView=(TextView)convertView.findViewById(R.id.orderId);
         deliveryView=(TextView)convertView.findViewById(R.id.deliveryTime);
         setButton=(Button)convertView.findViewById(R.id.setButton);
-        rejectG=(Button)convertView.findViewById(R.id.rejectG);
+
         accept=(Button)convertView.findViewById(R.id.acceptButton);
         acceptWithDelay=(Button)convertView.findViewById(R.id.acceptDelayButton);
-        reject=(Button)convertView.findViewById(R.id.rejectButton);
+
 
         row=(TableRow)convertView.findViewById(R.id.rowTwo);
         rowNew=(TableRow)convertView.findViewById(R.id.rowOne);
@@ -115,22 +117,22 @@ public class ContentAdapter extends BaseAdapter{
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                orderId=list.get(position).getOrder_id();
-                postData("http://medicians.herokuapp.com/update_status1/"+orderId+"/process");
+                orderId = list.get(position).getOrder_id();
+                postData("http://medicians.herokuapp.com/update_status1/" + orderId+"/process");
             }
         });
 
         acceptWithDelay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                orderId=list.get(position).getOrder_id();
+                orderId = list.get(position).getOrder_id();
 
                 createDialog();
 
             }
         });
 
-        reject.setOnClickListener(new View.OnClickListener() {
+   /*  reject.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 orderId=list.get(position).getOrder_id();
@@ -138,7 +140,7 @@ public class ContentAdapter extends BaseAdapter{
                 postData("http://medicians.herokuapp.com/update_status/" + orderId + "/cancel");
             }
         });
-
+*/
 
         ////
 
@@ -147,20 +149,20 @@ public class ContentAdapter extends BaseAdapter{
         setButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                postData("http://medicians.herokuapp.com/update_status1/"+orderId+"/"+status);
+                postData("http://medicians.herokuapp.com/update_status1/"+orderId + "/" + status);
                 Log.d("tag","status 1 :"+status);
             }
         });
 
+/*
 
-
-        rejectG.setOnClickListener(new View.OnClickListener() {
+       rejectG.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 postData("http://medicians.herokuapp.com/update_status/"+orderId+"/cancel");
             }
-        });
+        });*/
 
         return convertView;
     }

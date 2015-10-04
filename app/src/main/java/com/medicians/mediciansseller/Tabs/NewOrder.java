@@ -63,8 +63,9 @@ public class NewOrder extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 newOrder = list.get(position);
                 Intent intent=new Intent(getActivity(), NewOrderDetails.class);
-               // intent.putExtra("orderid",newOrder.getOrder_id());
-                startActivity(intent);
+                intent.putExtra("orderid",newOrder.getOrder_id());
+                intent.putExtra("flag",0);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -72,7 +73,13 @@ public class NewOrder extends Fragment {
     }
 
 
-
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorder/1/new",10);
+        populateList.getData();
+        registerAlarm();
+    }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {

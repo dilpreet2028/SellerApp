@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.android.volley.RequestQueue;
@@ -41,6 +42,7 @@ public class Delivered extends Fragment {
     public  static AttemptAdapter attemptAdapter;
     public static List<NewOrderModel> list;
     NewOrderModel newOrder;
+    Button setButton,rejectG;
     View view;
 
     @Nullable
@@ -48,7 +50,7 @@ public class Delivered extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.global,null);
 
-
+        setButton=(Button)view.findViewById(R.id.setButton);
         listView=(ListView)view.findViewById(R.id.contentList);
         list=new ArrayList<>();
         attemptAdapter=new AttemptAdapter(getActivity(),list,2);
@@ -60,13 +62,22 @@ public class Delivered extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 newOrder = list.get(position);
-                startActivity(new Intent(getActivity(), NewOrderDetails.class));
+                Intent intent=new Intent(getActivity(), NewOrderDetails.class);
+                intent.putExtra("orderid",newOrder.getOrder_id());
+                intent.putExtra("flag",5);
+                startActivityForResult(intent,1);
             }
         });
         return view;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorderinfo/1/compeleted",4);
+        populateList.getData();
 
+    }
 
 
     @Override
