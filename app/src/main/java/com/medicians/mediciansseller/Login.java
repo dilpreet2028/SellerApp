@@ -22,7 +22,7 @@ public class Login extends AppCompatActivity {
     String name,pass;
     SharedPreferences.Editor editor;
     SharedPreferences preferences;
-    public static final String PREF="mypref";
+    public static final String PREF="Data";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +55,7 @@ public class Login extends AppCompatActivity {
     private void checkpass( ){
 
 
-        String url="http://medicians.herokuapp.com/sellerlogin/a";
+        String url="http://medicians.herokuapp.com/sellerlogin/"+name;
         RequestQueue queue= Volley.newRequestQueue(Login.this);
         StringRequest request=new StringRequest(url,
                 new Response.Listener<String>() {

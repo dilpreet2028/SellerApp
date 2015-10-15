@@ -60,7 +60,7 @@ public class Dispatched extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorderinfo/1/dispatch",2);
+        PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorderinfo/1/Processed",2);
         populateList.getData();
 
     }
@@ -76,7 +76,7 @@ public class Dispatched extends Fragment {
 
 
 
-            PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorderinfo/1/dispatch",2);
+            PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorderinfo/1/Processed",2);
             populateList.getData();
 
 

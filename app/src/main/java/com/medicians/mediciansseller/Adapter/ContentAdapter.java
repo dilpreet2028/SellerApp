@@ -45,12 +45,12 @@ public class ContentAdapter extends BaseAdapter{
         this.index = index;
 
         if (index == 1)
-            status = "dispatch";
+            status = "Processed";
        if (index == 2)
-          status = "attempt";
+          status = "Dispatch";
 
         if(index==10)
-            status="process";
+            status="Accept";
     }
 
     /*
@@ -118,7 +118,9 @@ public class ContentAdapter extends BaseAdapter{
             @Override
             public void onClick(View v) {
                 orderId = list.get(position).getOrder_id();
-                postData("http://medicians.herokuapp.com/update_status1/" + orderId+"/process");
+                postData("http://medicians.herokuapp.com/update_status1/" + orderId+"/Accept");
+                postData("http://medicians.herokuapp.com/update_status/"+orderId+"/Accept");
+
             }
         });
 
@@ -247,7 +249,7 @@ public class ContentAdapter extends BaseAdapter{
 
                 dialog.cancel();
                 postData("http://medicians.herokuapp.com/update_status/" + orderId + "/delay+" + time);
-                postData("http://medicians.herokuapp.com/update_status1/"+orderId+"/process");
+                postData("http://medicians.herokuapp.com/update_status1/"+orderId+"/Accept");
                 refreshList();
 
             }

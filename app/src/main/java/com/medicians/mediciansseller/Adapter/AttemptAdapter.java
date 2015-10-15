@@ -98,7 +98,8 @@ public class AttemptAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 orderId=list.get(position).getOrder_id();
-                postData("http://medicians.herokuapp.com/update_status1/" + orderId + "/compeleted");
+                postData("http://medicians.herokuapp.com/update_status1/" + orderId + "/Compelete");
+                postData("http://medicians.herokuapp.com/update_status/" + orderId + "/Compelete");
             }
         });
 
@@ -123,6 +124,10 @@ public class AttemptAdapter extends BaseAdapter {
         }
         else  if(old.compareToIgnoreCase("attempt")==0)
         {   Log.d("mytag","old: "+old);
+            newStr="attempt_1";
+        }
+
+        else{
             newStr="attempt_1";
         }
 
@@ -228,7 +233,7 @@ public class AttemptAdapter extends BaseAdapter {
     private void refreshList(){
 
 
-            PopulateList testClass = new PopulateList(context, "http://medicians.herokuapp.com/sellerorderinfo/1/attempt", 3);
+            PopulateList testClass = new PopulateList(context, "http://medicians.herokuapp.com/sellerorderinfo/1/Dispatch", 3);
             testClass.getData();
 
 

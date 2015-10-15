@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,8 +28,10 @@ import com.medicians.mediciansseller.NavigationTabs.Home;
 import com.medicians.mediciansseller.NavigationTabs.OrderHistory;
 import com.medicians.mediciansseller.NavigationTabs.Statement;
 import com.medicians.mediciansseller.NavigationTabs.SwipeTabs;
-import com.medicians.mediciansseller.NotificationServices.AlarmReceiver;
-import com.medicians.mediciansseller.NotificationServices.ServerRequest;
+
+import com.medicians.mediciansseller.NotificationServices.GCMBroadcastReceiver;
+import com.medicians.mediciansseller.NotificationServices.RegistrationIntentService;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private static  FragmentManager manager;
     Toolbar toolbar;
     ActionBarDrawerToggle actionBarDrawerToggle;
-    PendingIntent pi;
+
+    String regId;
 
     public static  int mainScreenOn=0;
 
@@ -60,12 +64,6 @@ public class MainActivity extends AppCompatActivity {
 
         mainScreenOn=1;
 
-        Intent intent=new Intent(this,AlarmReceiver.class);
-        pi=PendingIntent.getBroadcast(this,0,intent,0);
-
-        startReciever();
-        //Starting service
-       //startService(new Intent(this,NewOrderService.class));
 
         manager=getSupportFragmentManager();
 
@@ -88,6 +86,12 @@ public class MainActivity extends AppCompatActivity {
         preferences=this.getSharedPreferences(Login.PREF, MODE_PRIVATE);
         editor=preferences.edit();
 
+        regId=preferences.getString("regId", "");
+        Log.d("mytag", regId + "  IDDDDDD");
+        if(regId.isEmpty())
+            startService(new Intent(this,RegistrationIntentService.class));
+
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -97,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
         displayFragment(0);
 
-        if(ServerRequest.status==1)
+        if(GCMBroadcastReceiver.notify==1)
             displayFragment(1);
 
     }
@@ -159,15 +163,4 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void startReciever(){
-        AlarmManager alarmManager=(AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
-
-        int interval=60000;
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(),interval,pi);
-
-        ComponentName componentName=new ComponentName(this,MainActivity.class);
-        PackageManager packageManager=this.getPackageManager();
-        packageManager.setComponentEnabledSetting(componentName,PackageManager.COMPONENT_ENABLED_STATE_ENABLED,PackageManager.DONT_KILL_APP);
-
-    }
 }

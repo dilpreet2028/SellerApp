@@ -73,7 +73,7 @@ public class Process extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorder/1/process",1);
+        populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorder/1/Accept",1);
         populateList.getData();
 
     }
@@ -90,7 +90,7 @@ public class Process extends Fragment {
             listView.setAdapter(contentAdapter);
 
 
-           populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorderinfo/1/process",1);
+           populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorderinfo/1/Accept",1);
             populateList.getData();
 
 

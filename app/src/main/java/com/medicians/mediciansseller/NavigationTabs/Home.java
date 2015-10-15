@@ -117,6 +117,7 @@ public class Home extends Fragment {
                             textView.setText("Out of Stock :"+(length-available)+" ");
                             progressDialog.dismiss();
                         }catch (Exception e){
+
                             Toast.makeText(getActivity(),"Error  in:"+e,Toast.LENGTH_LONG).show();
                         }
                     }

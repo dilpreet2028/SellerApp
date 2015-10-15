@@ -32,7 +32,7 @@ public class PopulateList {
     Context context;
     String url;
     int index;
-
+    List<NewOrderModel> list;
     public PopulateList(Context context, String url,int index) {
         super();
 
