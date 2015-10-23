@@ -206,11 +206,11 @@ public class ContentAdapter extends BaseAdapter{
     private void refreshList(){
 
         if(index==1){
-            PopulateList testClass=new PopulateList(context,"http://medicians.herokuapp.com/sellerorderinfo/1/process",1);
+            PopulateList testClass=new PopulateList(context,"http://medicians.herokuapp.com/sellerorderinfo/1/Processed",1);
             testClass.getData();
         }
         if(index==2){
-            PopulateList testClass=new PopulateList(context,"http://medicians.herokuapp.com/sellerorderinfo/1/dispatch",2);
+            PopulateList testClass=new PopulateList(context,"http://medicians.herokuapp.com/sellerorderinfo/1/Dispatch",2);
             testClass.getData();
         }
 

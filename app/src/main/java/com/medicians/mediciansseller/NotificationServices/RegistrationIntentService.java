@@ -59,7 +59,7 @@ public class RegistrationIntentService extends IntentService {
     private void registerOnServer(final String regId){
 
         RequestQueue queue= Volley.newRequestQueue(getApplicationContext());
-        StringRequest request=new StringRequest(Request.Method.POST, "http://192.168.0.105:5000/gcmregister"
+        StringRequest request=new StringRequest(Request.Method.POST, "http://medicians.herokuapp.com/gcmsellerregister"
                 , new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -75,7 +75,7 @@ public class RegistrationIntentService extends IntentService {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params=new HashMap<>();
-                params.put("name",preferences.getString("sellerid",""));
+                params.put("name","1a");
                 params.put("reg",regId);
                 return params;
             }
