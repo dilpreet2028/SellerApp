@@ -15,6 +15,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.medicians.mediciansseller.Adapter.HistoryAdapter;
 import com.medicians.mediciansseller.AppController;
+import com.medicians.mediciansseller.MainActivity;
 import com.medicians.mediciansseller.Models.History;
 import com.medicians.mediciansseller.R;
 
@@ -47,7 +48,7 @@ public class OrderHistory extends Fragment {
 
     public void getData(){
 
-        String url="http://medicians.herokuapp.com/allsellerorders/1";
+        String url="http://medicians.herokuapp.com/allsellerorders/"+ MainActivity.id;
 
         progressDialog=new ProgressDialog(getActivity());
         progressDialog.setMessage("Loading..");

@@ -18,6 +18,8 @@ import android.widget.Toast;
 
 import com.medicians.mediciansseller.Adapter.ContentAdapter;
 
+import com.medicians.mediciansseller.AppController;
+import com.medicians.mediciansseller.MainActivity;
 import com.medicians.mediciansseller.Models.NewOrderModel;
 import com.medicians.mediciansseller.NewOrderDetails;
 import com.medicians.mediciansseller.NewOrderServices.NewOrderReceiver;
@@ -76,7 +78,7 @@ public class NewOrder extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorder/1/new",10);
+        populateList=new PopulateList(getActivity(), AppController.basic+"New",10);
         populateList.getData();
         registerAlarm();
     }
@@ -87,7 +89,7 @@ public class NewOrder extends Fragment {
 
         if (isVisibleToUser)
         {
-            populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorder/1/new",10);
+            populateList=new PopulateList(getActivity(),AppController.basic+"New",10);
             populateList.getData();
             registerAlarm();
 
@@ -98,15 +100,15 @@ public class NewOrder extends Fragment {
     }
 
     public static void changeList(){
-
-        populateList.getData();
+        if (populateList!=null)
+                 populateList.getData();
     }
   private void registerAlarm(){
       intent=new Intent(getActivity(), NewOrderReceiver.class);
       pendingIntent=PendingIntent.getBroadcast(getActivity(),0,intent,0);
       alarmManager =(AlarmManager)getActivity().getSystemService(Context.ALARM_SERVICE);
       Log.d("Mytag", "Registered");
-      alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),3000,pendingIntent);
+      alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(),33000,pendingIntent);
   }
 
   private void unRegisterAlarm(){

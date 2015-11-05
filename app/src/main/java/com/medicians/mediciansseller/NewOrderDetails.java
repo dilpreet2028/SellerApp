@@ -72,19 +72,19 @@ public class NewOrderDetails extends AppCompatActivity {
 
         if(flag==0)
         {
-            status="process";
+            status="Processed";
             row1.setVisibility(View.VISIBLE);
         }
 
         if(flag==1)
         {
-            status="dispatch";
+            status="Dispatch";
             row2.setVisibility(View.VISIBLE);
             setGlobal.setText("Ready to dispatch");
         }
 
         if(flag==2)
-        {   status="attempt";
+        {   status="Attempt";
             row2.setVisibility(View.VISIBLE);
             setGlobal.setText("Dispatch");
         }
@@ -104,22 +104,23 @@ public class NewOrderDetails extends AppCompatActivity {
        }
 
     public void accept(View view){
-        postData("http://medicians.herokuapp.com/update_status1/" + orderid+"/process");
+        postData("http://medicians.herokuapp.com/update_status1/" + orderid+"/Processed");
     }
     public void delay(View view){
         createDelayDialog();
     }
     public void rejectOne(View view){
-        postData("http://medicians.herokuapp.com/update_status/" + orderid + "/cancel");
+
+        postData("http://medicians.herokuapp.com/update_status1/" + orderid + "/Cancel");
     }
     public void setIt(View view){
         postData("http://medicians.herokuapp.com/update_status1/"+orderid + "/" + status);
     }
     public void rejectTwo(View view){
-        postData("http://medicians.herokuapp.com/update_status/"+orderid+"/cancel");
+        postData("http://medicians.herokuapp.com/update_status/"+orderid+"/Cancel");
     }
     public void compelete(View view){
-        postData("http://medicians.herokuapp.com/update_status1/" + orderid + "/compeleted");
+        postData("http://medicians.herokuapp.com/update_status1/" + orderid + "/Compeleted");
     }
     public void attempt(View view){
         createAttemptDialog();
@@ -178,8 +179,8 @@ public class NewOrderDetails extends AppCompatActivity {
                 time = Integer.parseInt(timeStr);
 
 
-                postData("http://medicians.herokuapp.com/update_status/" + orderid + "/delay+" + time);
-                postData("http://medicians.herokuapp.com/update_status1/" + orderid + "/process");
+                postData("http://medicians.herokuapp.com/update_status/" + orderid +"/Accept_delay(+" + time+")");
+                postData("http://medicians.herokuapp.com/update_status1/" + orderid + "/Processed");
 
 
             }
@@ -236,9 +237,10 @@ public class NewOrderDetails extends AppCompatActivity {
                 dialog.dismiss();
 
 
-                if(status.compareToIgnoreCase("attempt_2")==0){
+                if(status.compareToIgnoreCase("Attempt_1")==0){
                     Toast.makeText(getApplicationContext(),"The order has been cancelled due to two attempts", Toast.LENGTH_LONG).show();
-                    postData("http://medicians.herokuapp.com/update_status/" + orderid + "/cancel");
+
+                    postData("http://medicians.herokuapp.com/update_status1/" + orderid + "/Cancel");
                 }
 
             }

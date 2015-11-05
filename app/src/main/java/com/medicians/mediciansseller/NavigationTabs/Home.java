@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +62,7 @@ public class Home extends Fragment {
     }
 
     private void getNewData(){
-        String url="http://medicians.herokuapp.com/sellerorder/1/new";
+        String url="http://medicians.herokuapp.com/sellerorder/"+MainActivity.id+"/New";
         StringRequest request=new StringRequest(url,
                 new Response.Listener<String>() {
                     @Override
@@ -90,7 +91,7 @@ public class Home extends Fragment {
     }
 
     private void getQuantityData(){
-        String url="http://medicians.herokuapp.com/seller_quantity/"+"abcmed";
+        String url="http://medicians.herokuapp.com/seller_quantity/"+MainActivity.id;
         StringRequest request=new StringRequest(url,
                 new Response.Listener<String>() {
                     @Override
@@ -107,6 +108,7 @@ public class Home extends Fragment {
                             for(int i=0;i<array.length();i++){
                                 object=array.getJSONObject(i);
                                 t=Integer.parseInt(object.getString("quantity"));
+                                Log.d("mytag",t+"");
                                 if(t>0)
                                     available++;
 

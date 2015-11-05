@@ -19,6 +19,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.medicians.mediciansseller.Adapter.AttemptAdapter;
+import com.medicians.mediciansseller.AppController;
+import com.medicians.mediciansseller.MainActivity;
 import com.medicians.mediciansseller.Models.Content;
 import com.medicians.mediciansseller.Adapter.ContentAdapter;
 import com.medicians.mediciansseller.Models.NewOrderModel;
@@ -74,7 +76,7 @@ public class Delivered extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorderinfo/1/Compelete",4);
+        PopulateList populateList=new PopulateList(getActivity(),AppController.info+"Complete",4);
         populateList.getData();
 
     }
@@ -87,7 +89,7 @@ public class Delivered extends Fragment {
         if (isVisibleToUser)
         {
 
-            PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorderinfo/1/Compelete",4);
+            PopulateList populateList=new PopulateList(getActivity(), AppController.info+"Complete",4);
             populateList.getData();
 
 

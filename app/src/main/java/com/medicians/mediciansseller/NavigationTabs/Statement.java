@@ -20,6 +20,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.medicians.mediciansseller.Adapter.ContentAdapter;
 import com.medicians.mediciansseller.Adapter.PaymentAdapter;
+import com.medicians.mediciansseller.MainActivity;
 import com.medicians.mediciansseller.Models.Content;
 import com.medicians.mediciansseller.Models.Payments;
 import com.medicians.mediciansseller.R;
@@ -92,7 +93,7 @@ public class Statement extends Fragment {
     }
 
     private void getData() {
-        String url = "http://medicians.herokuapp.com/transactions/123/"+month;
+        String url = "http://medicians.herokuapp.com/transactions/"+ MainActivity.id+"/"+month;
         RequestQueue queue = Volley.newRequestQueue(getActivity());
         StringRequest request = new StringRequest(url,
                 new Response.Listener<String>() {

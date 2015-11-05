@@ -86,9 +86,9 @@ public class SwipeTabs extends Fragment {
             if (position==0)
                 return "New Order";
             if (position==1)
-                return "Processing";
+                return "Process";
             if (position==2)
-                return "To be Dispatched";
+                return "Dispatch";
 
             if(position==3)
                 return "Attempt";

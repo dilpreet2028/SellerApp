@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.medicians.mediciansseller.Adapter.ContentAdapter;
+import com.medicians.mediciansseller.AppController;
 import com.medicians.mediciansseller.Models.NewOrderModel;
 import com.medicians.mediciansseller.NewOrderDetails;
 import com.medicians.mediciansseller.R;
@@ -60,7 +61,7 @@ public class Dispatched extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorderinfo/1/Processed",2);
+        PopulateList populateList=new PopulateList(getActivity(), AppController.info+"Processed",2);
         populateList.getData();
 
     }
@@ -76,7 +77,7 @@ public class Dispatched extends Fragment {
 
 
 
-            PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorderinfo/1/Processed",2);
+            PopulateList populateList=new PopulateList(getActivity(),AppController.info+"Processed",2);
             populateList.getData();
 
 

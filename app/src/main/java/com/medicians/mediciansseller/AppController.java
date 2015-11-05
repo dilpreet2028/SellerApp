@@ -13,7 +13,8 @@ public class AppController extends Application {
 
     public static final String TAG = AppController.class
             .getSimpleName();
-
+    public static String basic="http://medicians.herokuapp.com/sellerorder/"+ MainActivity.id+"/";
+    public static String info="http://medicians.herokuapp.com/sellerorderinfo/"+ MainActivity.id+"/";
     private RequestQueue requestQueue;
     private  static AppController mInstance;
 

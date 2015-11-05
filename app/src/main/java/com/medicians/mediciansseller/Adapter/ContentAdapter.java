@@ -206,16 +206,16 @@ public class ContentAdapter extends BaseAdapter{
     private void refreshList(){
 
         if(index==1){
-            PopulateList testClass=new PopulateList(context,"http://medicians.herokuapp.com/sellerorderinfo/1/Processed",1);
+            PopulateList testClass=new PopulateList(context,AppController.basic+"Processed",1);
             testClass.getData();
         }
         if(index==2){
-            PopulateList testClass=new PopulateList(context,"http://medicians.herokuapp.com/sellerorderinfo/1/Dispatch",2);
+            PopulateList testClass=new PopulateList(context,AppController.basic+"Dispatch",2);
             testClass.getData();
         }
 
         if(index==10){
-            PopulateList testClass=new PopulateList(context,"http://medicians.herokuapp.com/sellerorder/1/new",10);
+            PopulateList testClass=new PopulateList(context,AppController.basic+"New",10);
             testClass.getData();
         }
 
@@ -248,7 +248,7 @@ public class ContentAdapter extends BaseAdapter{
                 time=Integer.parseInt(timeStr);
 
                 dialog.cancel();
-                postData("http://medicians.herokuapp.com/update_status/" + orderId + "/delay+" + time);
+                postData("http://medicians.herokuapp.com/update_status/" + orderId + "/Accept_delay(+" + time+")");
                 postData("http://medicians.herokuapp.com/update_status1/"+orderId+"/Accept");
                 refreshList();
 

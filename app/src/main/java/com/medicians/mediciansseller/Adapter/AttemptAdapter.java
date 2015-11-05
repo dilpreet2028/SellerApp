@@ -20,6 +20,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.medicians.mediciansseller.AppController;
+import com.medicians.mediciansseller.MainActivity;
 import com.medicians.mediciansseller.Models.NewOrderModel;
 import com.medicians.mediciansseller.PopulateList;
 import com.medicians.mediciansseller.R;
@@ -98,8 +99,8 @@ public class AttemptAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 orderId=list.get(position).getOrder_id();
-                postData("http://medicians.herokuapp.com/update_status1/" + orderId + "/Compelete");
-                postData("http://medicians.herokuapp.com/update_status/" + orderId + "/Compelete");
+                postData("http://medicians.herokuapp.com/update_status1/" + orderId + "/Complete");
+                postData("http://medicians.herokuapp.com/update_status/" + orderId + "/Complete");
             }
         });
 
@@ -118,11 +119,11 @@ public class AttemptAdapter extends BaseAdapter {
     public static String selectStatus(String old){
         String newStr="";
 
-        if(old.compareToIgnoreCase("attempt_1")==0)
+        if(old.compareToIgnoreCase("Attempt_1")==0)
         {   Log.d("mytag","oldL "+old);
             newStr="attempt_2";
         }
-        else  if(old.compareToIgnoreCase("attempt")==0)
+        else  if(old.compareToIgnoreCase("Attempt")==0)
         {   Log.d("mytag","old: "+old);
             newStr="attempt_1";
         }
@@ -233,7 +234,7 @@ public class AttemptAdapter extends BaseAdapter {
     private void refreshList(){
 
 
-            PopulateList testClass = new PopulateList(context, "http://medicians.herokuapp.com/sellerorderinfo/1/Dispatch", 3);
+            PopulateList testClass = new PopulateList(context, "http://medicians.herokuapp.com/sellerdispatch/"+ MainActivity.id, 3);
             testClass.getData();
 
 

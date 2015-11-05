@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private static  FragmentManager manager;
     Toolbar toolbar;
     ActionBarDrawerToggle actionBarDrawerToggle;
-
+    public static String id="haron0009gmail";
     String regId;
 
     public static  int mainScreenOn=0;

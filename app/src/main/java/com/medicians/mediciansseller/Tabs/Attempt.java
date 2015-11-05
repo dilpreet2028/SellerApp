@@ -20,6 +20,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.medicians.mediciansseller.Adapter.AttemptAdapter;
 import com.medicians.mediciansseller.Adapter.ContentAdapter;
+import com.medicians.mediciansseller.AppController;
+import com.medicians.mediciansseller.MainActivity;
 import com.medicians.mediciansseller.Models.NewOrderModel;
 import com.medicians.mediciansseller.NewOrderDetails;
 import com.medicians.mediciansseller.R;
@@ -71,7 +73,7 @@ public class Attempt extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorder/1/Dispatch",3);
+        PopulateList populateList=new PopulateList(getActivity(), "http://medicians.herokuapp.com/sellerdispatch/"+MainActivity.id,3);
         populateList.getData();
 
     }
@@ -87,7 +89,7 @@ public class Attempt extends Fragment {
            
 
 
-            PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorderinfo/1/Dispatch",3);
+            PopulateList populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerdispatch/"+MainActivity.id,3);
             populateList.getData();
 
 

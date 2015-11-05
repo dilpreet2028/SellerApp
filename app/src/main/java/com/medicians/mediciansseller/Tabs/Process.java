@@ -20,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.medicians.mediciansseller.Adapter.ContentAdapter;
+import com.medicians.mediciansseller.AppController;
 import com.medicians.mediciansseller.Models.Content;
 import com.medicians.mediciansseller.Models.NewOrderModel;
 import com.medicians.mediciansseller.NewOrderDetails;
@@ -73,7 +74,7 @@ public class Process extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorder/1/Accept",1);
+        populateList=new PopulateList(getActivity(), AppController.info+"Accept",1);
         populateList.getData();
 
     }
@@ -90,7 +91,7 @@ public class Process extends Fragment {
             listView.setAdapter(contentAdapter);
 
 
-           populateList=new PopulateList(getActivity(),"http://medicians.herokuapp.com/sellerorderinfo/1/Accept",1);
+           populateList=new PopulateList(getActivity(),AppController.info+"Accept",1);
             populateList.getData();
 
 
