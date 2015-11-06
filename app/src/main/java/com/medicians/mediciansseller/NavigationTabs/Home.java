@@ -13,6 +13,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -23,16 +25,19 @@ import com.medicians.mediciansseller.R;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by dilpreet on 7/9/15.
  */
 public class Home extends Fragment {
 
-    int length,available;
+    int length,available=0,outofstock=0,inactive=0;
     ProgressBar progressBar;
-    TextView textView,newOrdersText;
+    TextView textView,newOrdersText,statusText,totalText;
     ProgressDialog progressDialog;
-    CardView cardView;
+    CardView cardView,cardList;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,13 +47,15 @@ public class Home extends Fragment {
         textView=(TextView)view.findViewById(R.id.out_of_stock);
         newOrdersText=(TextView)view.findViewById(R.id.new_order);
         cardView=(CardView)view.findViewById(R.id.card2);
-
+        cardList=(CardView)view.findViewById(R.id.card1);
+        totalText=(TextView)view.findViewById(R.id.total_stock);
+        statusText=(TextView)view.findViewById(R.id.item_status);
         progressDialog=new ProgressDialog(getActivity());
         progressDialog.setMessage("Loading..");
         progressDialog.show();
-
-        progressBar.setIndeterminate(false);
-        progressBar.setMax(100);
+        progressBar.setVisibility(View.GONE);
+      //  progressBar.setIndeterminate(false);
+    //    progressBar.setMax(100);
         getQuantityData();
         getNewData();
 
@@ -56,6 +63,13 @@ public class Home extends Fragment {
             @Override
             public void onClick(View v) {
                 MainActivity.displayFragment(1);
+            }
+        });
+
+        cardList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MainActivity.displayFragment(5);
             }
         });
         return view;
@@ -91,14 +105,15 @@ public class Home extends Fragment {
     }
 
     private void getQuantityData(){
-        String url="http://medicians.herokuapp.com/seller_quantity/"+MainActivity.id;
-        StringRequest request=new StringRequest(url,
+        String url="http://medicians.herokuapp.com/seller_outofstock";
+        StringRequest request=new StringRequest(Request.Method.POST,url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
 
                         JSONArray array;
                         int t;
+                        String status;
                         try{
                             array=new JSONArray(response);
                             length=array.length();
@@ -106,17 +121,22 @@ public class Home extends Fragment {
                             JSONObject object;
 
                             for(int i=0;i<array.length();i++){
-                                object=array.getJSONObject(i);
+                                object= array.getJSONObject(i);
                                 t=Integer.parseInt(object.getString("quantity"));
                                 Log.d("mytag",t+"");
                                 if(t>0)
                                     available++;
+                                status=object.getString("status");
+                                if(status.compareToIgnoreCase("Inactive")==0)
+                                    inactive++;
 
                             }
 
 
-                            progressBar.setProgress((int)(available*100)/length);
+                         //   progressBar.setProgress((int)(available*100)/length);
                             textView.setText("Out of Stock :"+(length-available)+" ");
+                            statusText.setText("Inactive: "+inactive);
+                            totalText.setText("Total Stocks "+length);
                             progressDialog.dismiss();
                         }catch (Exception e){
 
@@ -129,7 +149,14 @@ public class Home extends Fragment {
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(getActivity(),"Error :"+error,Toast.LENGTH_LONG).show();
                     }
-                });
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map=new HashMap<>();
+                map.put("id",MainActivity.id);
+                return map;
+            }
+        };
 
         AppController.getInstance().addToRequestQueue(request);
     }

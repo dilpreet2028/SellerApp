@@ -13,6 +13,8 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -20,6 +22,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.medicians.mediciansseller.Adapter.ContentAdapter;
 import com.medicians.mediciansseller.Adapter.DueAdapter;
+import com.medicians.mediciansseller.MainActivity;
 import com.medicians.mediciansseller.Models.Content;
 import com.medicians.mediciansseller.Models.Due;
 import com.medicians.mediciansseller.R;
@@ -29,7 +32,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by dilpreet on 14/8/15.
@@ -72,9 +77,9 @@ public class DuePayment extends Fragment {
     }
 
     private void getData() {
-        String url = "http://medicians.herokuapp.com/masterpayment/123";
+        String url = "http://medicians.herokuapp.com/masterpayment";
         RequestQueue queue = Volley.newRequestQueue(getActivity());
-        StringRequest request = new StringRequest(url,
+        StringRequest request = new StringRequest(Request.Method.POST,url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -88,7 +93,14 @@ public class DuePayment extends Fragment {
                         Toast.makeText(getActivity(),"Error",Toast.LENGTH_LONG).show();
                         progressDialog.dismiss();
                     }
-                });
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map=new HashMap<>();
+                map.put("id", MainActivity.id);
+                return map;
+            }
+        };
         queue.add(request);
     }
 
@@ -100,10 +112,10 @@ public class DuePayment extends Fragment {
 
             for (int i = 0; i < array.length(); i++) {
                 JSONObject object = array.getJSONObject(i);
-                int totalcom=object.getInt("totalcom");
+                float totalcom=object.getInt("totalcom");
                 Due addItem=new Due();
-                int paid=object.getInt("paid");
-                int unpaid=totalcom-paid;
+                float paid=object.getInt("paid");
+                float unpaid=totalcom-paid;
                 totalInt+=totalcom;
                 unpaidInt+=unpaid;
 
@@ -119,7 +131,7 @@ public class DuePayment extends Fragment {
             progressDialog.dismiss();
 
             totalAll.setText("Amount to be Paid :" + totalInt);
-            unpaidAll.setText("Amount UnPaid"+unpaidInt+"");
+            unpaidAll.setText("Amount UnPaid :"+unpaidInt+"");
 
         } catch (JSONException e) {
             Log.d("Tag", e.toString());

@@ -3,7 +3,6 @@
     package="com.medicians.mediciansseller" >
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
@@ -22,29 +21,20 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
-
-
-
         <activity
             android:name=".Login"
             android:label="@string/title_activity_login" >
-
         </activity>
-
-
         <activity
             android:name=".NewOrderDetails"
             android:label="@string/title_activity_new_order_details" >
         </activity>
-
 
         <receiver
             android:name=".NewOrderServices.NewOrderReceiver"
@@ -57,20 +47,20 @@
             android:enabled="true"
             android:exported="true" >
         </service>
-
         <service
             android:name=".NotificationServices.RegistrationIntentService"
             android:exported="false" >
         </service>
 
-
-
         <receiver android:name=".NotificationServices.GCMBroadcastReceiver" >
             <intent-filter>
-                <action android:name="com.google.android.c2dm.intent.RECEIVE"/>
-                <category android:name="com.medicians.mediciansseller"/>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+
+                <category android:name="com.medicians.mediciansseller" />
             </intent-filter>
         </receiver>
+
+
     </application>
 
 </manifest>

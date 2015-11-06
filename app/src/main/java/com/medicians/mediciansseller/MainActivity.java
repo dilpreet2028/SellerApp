@@ -36,7 +36,7 @@ import com.medicians.mediciansseller.NotificationServices.RegistrationIntentServ
 public class MainActivity extends AppCompatActivity {
 
     private static ListView listView;
-    String[] list={"Home","Tabs","Statements","Due Payments","Order History"};
+    String[] list={"Home","Tabs","Statements","Due Payments","Order History","Listing"};
     ArrayAdapter<String> listadapter;
     private static DrawerLayout drawerLayout;
     private static  FragmentManager manager;
@@ -121,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
             case 4: fragment=new OrderHistory();
                 break;
+            case 5: fragment=new Listing();
         }
 
         manager.beginTransaction().replace(R.id.container_body,fragment)
