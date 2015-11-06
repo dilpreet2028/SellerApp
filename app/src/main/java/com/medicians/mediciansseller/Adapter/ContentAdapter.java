@@ -117,6 +117,7 @@ public class ContentAdapter extends BaseAdapter{
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("mytag","clicked");
                 orderId = list.get(position).getOrder_id();
                 postData("http://medicians.herokuapp.com/update_status1/" + orderId+"/Accept");
                 postData("http://medicians.herokuapp.com/update_status/"+orderId+"/Accept");
@@ -206,11 +207,11 @@ public class ContentAdapter extends BaseAdapter{
     private void refreshList(){
 
         if(index==1){
-            PopulateList testClass=new PopulateList(context,AppController.basic+"Processed",1);
+            PopulateList testClass=new PopulateList(context,AppController.basic+"Accept",1);
             testClass.getData();
         }
         if(index==2){
-            PopulateList testClass=new PopulateList(context,AppController.basic+"Dispatch",2);
+            PopulateList testClass=new PopulateList(context,AppController.basic+"Processed",2);
             testClass.getData();
         }
 

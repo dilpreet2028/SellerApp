@@ -64,6 +64,7 @@ public class Process extends Fragment {
                 Intent intent=new Intent(getActivity(), NewOrderDetails.class);
                 intent.putExtra("orderid",newOrder.getOrder_id());
                 intent.putExtra("flag",1);
+                intent.putExtra("status",newOrder.getStatus1());
                 startActivityForResult(intent,1);
             }
         });

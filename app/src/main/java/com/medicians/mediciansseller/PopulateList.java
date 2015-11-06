@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -51,7 +52,7 @@ public class PopulateList {
 
 
     String data;
-        StringRequest request=new StringRequest(url,
+        StringRequest request=new StringRequest(Request.Method.POST,url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

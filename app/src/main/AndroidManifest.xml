@@ -55,7 +55,6 @@
         <receiver android:name=".NotificationServices.GCMBroadcastReceiver" >
             <intent-filter>
                 <action android:name="com.google.android.c2dm.intent.RECEIVE" />
-
                 <category android:name="com.medicians.mediciansseller" />
             </intent-filter>
         </receiver>

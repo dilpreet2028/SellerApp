@@ -65,6 +65,7 @@ public class NewOrder extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 newOrder = list.get(position);
                 Intent intent=new Intent(getActivity(), NewOrderDetails.class);
+                intent.putExtra("status",newOrder.getStatus1());
                 intent.putExtra("orderid",newOrder.getOrder_id());
                 intent.putExtra("flag",0);
                 startActivityForResult(intent, 1);

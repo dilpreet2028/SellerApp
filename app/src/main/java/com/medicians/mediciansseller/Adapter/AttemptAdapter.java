@@ -116,25 +116,7 @@ public class AttemptAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public static String selectStatus(String old){
-        String newStr="";
 
-        if(old.compareToIgnoreCase("Attempt_1")==0)
-        {   Log.d("mytag","oldL "+old);
-            newStr="attempt_2";
-        }
-        else  if(old.compareToIgnoreCase("Attempt")==0)
-        {   Log.d("mytag","old: "+old);
-            newStr="attempt_1";
-        }
-
-        else{
-            newStr="attempt_1";
-        }
-
-        Log.d("mytag","after: "+newStr);
-        return newStr;
-    }
 
     private void createDialog(){
         final RadioButton reasonOne,reasonTwo,reasonOther;
@@ -159,21 +141,32 @@ public class AttemptAdapter extends BaseAdapter {
             public void onClick(View v) {
                 int id=radioGroup.getCheckedRadioButtonId();
 
-                Log.d("Mytag","Before: "+status);
+                Log.d("Mytag", "Before: " + status);
                 String reason="";
                 if(R.id.radioButton==id)
                 {
                     reason="One";
-                    postData("http://medicians.herokuapp.com/update_status1/"+orderId+"/"+selectStatus(status)+"+"+reason);
+                    if(check(status))
+                         postData("http://medicians.herokuapp.com/update_status1/"+orderId+"/Attempt_1("+reason+")");
+                    else
+                        postData("http://medicians.herokuapp.com/update_status1/" + orderId + "/Cancel");
                 }
                 else if(R.id.radioButton2==id)
                 {
                     reason="Two";
-                    postData("http://medicians.herokuapp.com/update_status1/"+orderId+"/"+selectStatus(status)+"+"+reason);
+                    if(check(status))
+                         postData("http://medicians.herokuapp.com/update_status1/"+orderId+"/Attempt_1("+reason+")");
+                    else
+                        postData("http://medicians.herokuapp.com/update_status1/" + orderId + "/Cancel");
+
                 }
                 else if(R.id.otherReason==id){
                     reason=reasonText.getText().toString();
-                    postData("http://medicians.herokuapp.com/update_status1/"+orderId+"/"+selectStatus(status)+"+"+reason);
+                    if(check(status))
+                        postData("http://medicians.herokuapp.com/update_status1/"+orderId+"/Attempt_1("+reason+")");
+                    else
+                        postData("http://medicians.herokuapp.com/update_status1/" + orderId + "/Cancel");
+
                 }
 
                 else{
@@ -183,11 +176,6 @@ public class AttemptAdapter extends BaseAdapter {
 
                 dialog.dismiss();
 
-
-                if(status.compareToIgnoreCase("attempt_2")==0){
-                    Toast.makeText(context,"The order has been cancelled due to two attempts", Toast.LENGTH_LONG).show();
-                    postData("http://medicians.herokuapp.com/update_status/" + orderId + "/cancel");
-                }
 
             }
         });
@@ -204,6 +192,12 @@ public class AttemptAdapter extends BaseAdapter {
 
     }
 
+    private boolean check(String status){
+        boolean res=true;
+            if(status.compareToIgnoreCase("Attempt_1")==0)
+                return false;
+        return res;
+    }
 
     public void postData(String url){
 

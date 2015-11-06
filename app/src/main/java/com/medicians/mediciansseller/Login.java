@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -16,6 +18,9 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class Login extends AppCompatActivity {
     EditText username,password;
@@ -31,7 +36,7 @@ public class Login extends AppCompatActivity {
         password=(EditText)findViewById(R.id.password);
 
 
-        preferences=getSharedPreferences(PREF,MODE_PRIVATE);
+        preferences=getSharedPreferences(PREF, MODE_PRIVATE);
         editor=preferences.edit();
 
         if(preferences.getString("username",null)!=null) {
@@ -55,9 +60,9 @@ public class Login extends AppCompatActivity {
     private void checkpass( ){
 
 
-        String url="http://medicians.herokuapp.com/sellerlogin/"+name;
+        String url="http://medicians.herokuapp.com/sellerlogin";
         RequestQueue queue= Volley.newRequestQueue(Login.this);
-        StringRequest request=new StringRequest(url,
+        StringRequest request=new StringRequest(Request.Method.POST,url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -87,7 +92,14 @@ public class Login extends AppCompatActivity {
                         Toast.makeText(Login.this,"Error;:"+error.toString(),Toast.LENGTH_LONG).show();
 
                     }
-                });
+                }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> map=new HashMap<>();
+                map.put("name",name);
+                return map;
+            }
+        };
 
 
         queue.add(request);

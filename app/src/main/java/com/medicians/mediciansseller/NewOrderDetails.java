@@ -43,7 +43,7 @@ public class NewOrderDetails extends AppCompatActivity {
     OrderAdapter adapter;
     LinearLayout row1,row2,row3;
     int flag,time;
-    String status;
+    String status,status1;
     RadioGroup radioGroup;
     Button setGlobal,rejectGlobal,acceptButton,delay,reject,compelete,attempt;
 
@@ -69,28 +69,28 @@ public class NewOrderDetails extends AppCompatActivity {
         attempt=(Button)findViewById(R.id.attemptOrder);
 
         flag=getIntent().getIntExtra("flag", 0);
-
+        status1=getIntent().getStringExtra("status");
         if(flag==0)
         {
-            status="Processed";
             row1.setVisibility(View.VISIBLE);
         }
 
         if(flag==1)
         {
-            status="Dispatch";
+            status = "Processed";
             row2.setVisibility(View.VISIBLE);
             setGlobal.setText("Ready to dispatch");
         }
 
+
         if(flag==2)
-        {   status="Attempt";
+        {status = "Dispatch";
             row2.setVisibility(View.VISIBLE);
             setGlobal.setText("Dispatch");
         }
 
         if(flag==3)
-        {
+        { status="Attempt";
             row3.setVisibility(View.VISIBLE);
         }
 
@@ -104,23 +104,29 @@ public class NewOrderDetails extends AppCompatActivity {
        }
 
     public void accept(View view){
-        postData("http://medicians.herokuapp.com/update_status1/" + orderid+"/Processed");
+        postData("http://medicians.herokuapp.com/update_status/" + orderid+"/Accept");
+        postData("http://medicians.herokuapp.com/update_status1/" + orderid+"/Accept");
+        finish();
     }
     public void delay(View view){
         createDelayDialog();
     }
     public void rejectOne(View view){
-
+        postData("http://medicians.herokuapp.com/update_status/" + orderid + "/Cancel");
         postData("http://medicians.herokuapp.com/update_status1/" + orderid + "/Cancel");
+        finish();
     }
     public void setIt(View view){
         postData("http://medicians.herokuapp.com/update_status1/"+orderid + "/" + status);
+        finish();
     }
     public void rejectTwo(View view){
         postData("http://medicians.herokuapp.com/update_status/"+orderid+"/Cancel");
+        finish();
     }
     public void compelete(View view){
-        postData("http://medicians.herokuapp.com/update_status1/" + orderid + "/Compeleted");
+        postData("http://medicians.herokuapp.com/update_status1/" + orderid + "/Complete");
+        finish();
     }
     public void attempt(View view){
         createAttemptDialog();
@@ -180,8 +186,9 @@ public class NewOrderDetails extends AppCompatActivity {
 
 
                 postData("http://medicians.herokuapp.com/update_status/" + orderid +"/Accept_delay(+" + time+")");
-                postData("http://medicians.herokuapp.com/update_status1/" + orderid + "/Processed");
-
+                postData("http://medicians.herokuapp.com/update_status1/" + orderid + "/Accept");
+                dialog.dismiss();
+                finish();
 
             }
         });
@@ -189,75 +196,64 @@ public class NewOrderDetails extends AppCompatActivity {
 
     }
 
-    private void createAttemptDialog(){
+    private void createAttemptDialog() {
 
 
         final RadioButton reasonOther;
         final EditText reasonText;
         Button submitB;
-        final Dialog dialog = new Dialog(getApplicationContext());
+        final Dialog dialog = new Dialog(NewOrderDetails.this);
         dialog.setContentView(R.layout.attempt_dialog);
         dialog.show();
 
-        reasonOther=(RadioButton)dialog.findViewById(R.id.otherReason);
-        radioGroup=(RadioGroup)dialog.findViewById(R.id.radioGroup);
-        reasonText=(EditText)dialog.findViewById(R.id.reasonText);
-        submitB=(Button)dialog.findViewById(R.id.submitRadio);
-
-
+        reasonOther = (RadioButton) dialog.findViewById(R.id.otherReason);
+        radioGroup = (RadioGroup) dialog.findViewById(R.id.radioGroup);
+        reasonText = (EditText) dialog.findViewById(R.id.reasonText);
+        submitB = (Button) dialog.findViewById(R.id.submitRadio);
 
 
         submitB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id=radioGroup.getCheckedRadioButtonId();
+                int id = radioGroup.getCheckedRadioButtonId();
 
-                Log.d("Mytag","Before: "+status);
-                String reason="";
-                if(R.id.radioButton==id)
-                {
-                    reason="One";
-                    postData("http://medicians.herokuapp.com/update_status1/"+orderid+"/"+AttemptAdapter.selectStatus(status)+"+"+reason);
-                }
-                else if(R.id.radioButton2==id)
-                {
-                    reason="Two";
-                    postData("http://medicians.herokuapp.com/update_status1/"+orderid+"/"+AttemptAdapter.selectStatus(status)+"+"+reason);
-                }
-                else if(R.id.otherReason==id){
-                    reason=reasonText.getText().toString();
-                    postData("http://medicians.herokuapp.com/update_status1/"+orderid+"/"+ AttemptAdapter.selectStatus(status)+"+"+reason);
-                }
 
-                else{
-                    Toast.makeText(getApplicationContext(),"Please choose a reason for attempt", Toast.LENGTH_LONG).show();
-                }
+                String reason = "";
+                if (R.id.radioButton == id) {
+                    reason = "One";
+                    if (check(status1))
+                        postData("http://medicians.herokuapp.com/update_status1/" + orderid +"/Attempt_1("+reason+")");
+                    else
+                        postData("http://medicians.herokuapp.com/update_status1/" + orderid + "/Cancel");
+                } else if (R.id.radioButton2 == id) {
+                    reason = "Two";
+                    if (check(status1))
+                        postData("http://medicians.herokuapp.com/update_status1/" + orderid +"/Attempt_1("+reason+")");
+                    else
+                        postData("http://medicians.herokuapp.com/update_status1/" + orderid + "/Cancel");
 
+                } else if (R.id.otherReason == id) {
+                    reason = reasonText.getText().toString();
+                    if (check(status1))
+                        postData("http://medicians.herokuapp.com/update_status1/" + orderid + "/Attempt_1("+reason+")");
+                    else
+                        postData("http://medicians.herokuapp.com/update_status1/" + orderid + "/Cancel");
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "Please choose a reason for attempt", Toast.LENGTH_LONG).show();
+                }
 
                 dialog.dismiss();
-
-
-                if(status.compareToIgnoreCase("Attempt_1")==0){
-                    Toast.makeText(getApplicationContext(),"The order has been cancelled due to two attempts", Toast.LENGTH_LONG).show();
-
-                    postData("http://medicians.herokuapp.com/update_status1/" + orderid + "/Cancel");
-                }
-
+                finish();
             }
         });
-
-        reasonOther.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                reasonText.setVisibility(View.VISIBLE);
-            }
-        });
-
-
-
-
-
     }
+            private boolean check(String status){
+                boolean res=true;
+                if(status.compareToIgnoreCase("Attempt_1")==0)
+                    return false;
+                return res;
+            }
 
 
     private void getData(){

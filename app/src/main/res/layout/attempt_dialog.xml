@@ -10,13 +10,13 @@
     <RadioButton
         android:layout_width="396dp"
         android:layout_height="wrap_content"
-        android:text="Reason 1"
+        android:text=" Person Not available"
         android:id="@+id/radioButton" />
 
     <RadioButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="reason2"
+        android:text="Premises closed"
         android:id="@+id/radioButton2" />
 
     <RadioButton

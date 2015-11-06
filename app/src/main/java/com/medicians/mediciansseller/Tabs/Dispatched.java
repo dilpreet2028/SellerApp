@@ -52,6 +52,7 @@ public class Dispatched extends Fragment {
                 Intent intent=new Intent(getActivity(), NewOrderDetails.class);
                 intent.putExtra("orderid",newOrder.getOrder_id());
                 intent.putExtra("flag",2);
+                intent.putExtra("status",newOrder.getStatus1());
                 startActivityForResult(intent,1);
             }
         });
